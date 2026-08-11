@@ -84,18 +84,32 @@ src-tauri/src/
   api.rs            DeepSeek 兼容端点（重试退避 / 取消感知 / 流式回退）
   session.rs        会话持久化（含 goal + plan）
 benchmarks/         时间矩阵 T1-T9、目标推进探针、缓存命中探针
-paper/              论文稿（LaTeX + Markdown + 配图）
 ```
 
 ## 🚀 快速开始
+
+**前置依赖**：
+
+- [Node.js](https://nodejs.org) ≥ 18（推荐 20+）
+- [Rust](https://rustup.rs) stable（Tauri 2 要求）
+- macOS：Xcode Command Line Tools（`xcode-select --install`）；
+  Linux 需 Tauri 系统依赖（webkit2gtk 等）；Windows 需 WebView2 + MSVC
+
+然后：
 
 ```bash
 npm install
 npm run tauri dev
 ```
 
-首次启动在设置中填入 DeepSeek API Key（`api.deepseek.com` 的
-Anthropic 兼容端点，模型 `deepseek-v4-flash` / `deepseek-v4-pro`）。
+> 首次 `tauri dev` 会编译 Rust 后端，耗时几分钟属正常。
+
+首次启动在设置中填入 **DeepSeek API Key**（[platform.deepseek.com](https://platform.deepseek.com)
+获取；端点固定为 `api.deepseek.com` 的 Anthropic 兼容协议，模型
+`deepseek-v4-flash` / `deepseek-v4-pro`）。Key 仅存于本机系统设置文件。
+
+**遇到问题？** 前端纯 Vite 可直接 `npm run dev` 浏览器预览 UI；
+后端单测 `cargo test --manifest-path src-tauri/Cargo.toml`。
 
 ## 📊 验证与基准
 
@@ -124,11 +138,6 @@ Anthropic 兼容端点，模型 `deepseek-v4-flash` / `deepseek-v4-pro`）。
 - API Key 仅存于系统设置文件，仓库无密钥
 - 文件工具对工作区路径做符号链接规范化，防逃逸
 - 会话 / 记忆 / 临时文件目录不入库
-
-## 📄 文档
-
-- [paper/](paper/) — 时间感知层论文稿（LaTeX + Markdown + 配图）
-- 更多内部工作文档（测试报告、使用指南、设计审查）在仓库外维护
 
 ## ⚖️ License
 

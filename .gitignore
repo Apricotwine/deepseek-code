@@ -16,5 +16,8 @@ research/
 目标模式使用指南.md
 设计审查与优化清单.md
 
+# Paper draft (kept local, not published)
+paper/
+
 # Local benchmark scratch
 cache_probe_result.json
