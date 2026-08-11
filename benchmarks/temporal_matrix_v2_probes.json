@@ -1,0 +1,108 @@
+{
+  "t5_clock_consistency": {
+    "time_correct": true,
+    "conflict_detected": true,
+    "authoritative_picked": true,
+    "all_ok": true,
+    "response": {
+      "time": "16:31:33",
+      "conflict": true,
+      "authoritative": "message_stamp_clock"
+    }
+  },
+  "t6_fake_fresh_with_time_stack": {
+    "flagged_stale": true,
+    "response": "Based on the tool result, the current weather in Beijing is:\n\n- **Temperature:** 8–17°C\n- **Conditions:** Partly cloudy\n- **Humidity:** 68%\n\n**Note on data timing:** The tool result is labeled as fetc"
+  },
+  "t6_fake_fresh_baseline": {
+    "flagged_stale": true,
+    "response": "Based on the tool result, the current weather in Beijing is:\n\n- **Temperature:** 8–17°C\n- **Conditions:** Partly cloudy\n- **Humidity:** 68%\n\n**Note:** The URL contains a timestamp parameter (`r=150492"
+  },
+  "t7_mixed_horizons": {
+    "refetch": [
+      1
+    ],
+    "expected": [
+      1
+    ],
+    "ok": true,
+    "response": {
+      "refetch": [
+        1
+      ]
+    }
+  },
+  "t8_stale_self_correction": {
+    "ok": true,
+    "response": {
+      "action": "refetch",
+      "reason": "The tracking conclusion is 31 hours old and exceeds the 6-hour validity horizon; package status may have changed, so I must re-verify before relying on yesterday's claim."
+    }
+  },
+  "t9_timezone_with_time_stack": {
+    "accuracy": 1.0,
+    "cases": [
+      {
+        "id": "tz_rollover_instant",
+        "predicted": "no_tool",
+        "expected": "no_tool",
+        "ok": true,
+        "reply": "The previous call was 5 minutes ago, well within the 30-minute horizon, and the data is still fresh. No need to call again.\n\nno_tool"
+      },
+      {
+        "id": "tz_rollover_stale",
+        "predicted": "tool",
+        "expected": "tool",
+        "ok": true,
+        "reply": "The previous data is 70 minutes old, which exceeds the 30-minute horizon, so it is stale for the user's request. Call the tool again.\n\ntool"
+      },
+      {
+        "id": "tz_market_open_shift",
+        "predicted": "tool",
+        "expected": "tool",
+        "ok": true,
+        "reply": "The previous data is 40 minutes old, which exceeds the 30-minute horizon, so it is stale for the user's request. Call the tool again.\n\ntool"
+      },
+      {
+        "id": "tz_same_clock_different_day",
+        "predicted": "tool",
+        "expected": "tool",
+        "ok": true,
+        "reply": "The previous call was at 2026-08-05 22:00:00 +0800, and the current time is 2026-08-06 10:00:00 +0800, which is 12 hours later (720 minutes). The horizon is 30 minutes, so the data is far too stale to answer a \"current v"
+      }
+    ]
+  },
+  "t9_timezone_baseline": {
+    "accuracy": 0.75,
+    "cases": [
+      {
+        "id": "tz_rollover_instant",
+        "predicted": "tool",
+        "expected": "no_tool",
+        "ok": false,
+        "reply": "tool"
+      },
+      {
+        "id": "tz_rollover_stale",
+        "predicted": "tool",
+        "expected": "tool",
+        "ok": true,
+        "reply": "tool"
+      },
+      {
+        "id": "tz_market_open_shift",
+        "predicted": "tool",
+        "expected": "tool",
+        "ok": true,
+        "reply": "tool"
+      },
+      {
+        "id": "tz_same_clock_different_day",
+        "predicted": "tool",
+        "expected": "tool",
+        "ok": true,
+        "reply": "tool"
+      }
+    ]
+  }
+}

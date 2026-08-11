@@ -1,0 +1,15 @@
+node_modules/
+dist/
+src-tauri/target/
+src-tauri/gen/
+.DS_Store
+*.log
+
+# Private runtime data: sessions, project memory, temp spill files
+.deepseek-code/
+
+# Personal research (user's own work; excluded from the repo by default)
+research/
+
+# Local benchmark scratch
+cache_probe_result.json

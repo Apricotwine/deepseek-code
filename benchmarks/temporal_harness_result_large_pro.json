@@ -1,0 +1,2919 @@
+{
+  "model": "deepseek-v4-pro",
+  "api_base": "https://api.deepseek.com/anthropic",
+  "seeds": [
+    7,
+    11
+  ],
+  "probes": {
+    "t1_with_time_stack": {
+      "accuracy": 1.0,
+      "n": 72,
+      "wilson95": 0.0,
+      "cases": [
+        {
+          "id": "gen000_get_stock_price_5min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen001_get_weather_65min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen002_track_package_360min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen003_web_search_557min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen004_run_shell_91min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen005_read_file_30min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen006_get_stock_price_9min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen007_get_weather_172min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen008_track_package_360min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen009_web_search_133min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen010_run_shell_651min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen011_read_file_30min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen012_get_stock_price_3min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen013_get_weather_233min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen014_track_package_360min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen015_web_search_136min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen016_run_shell_99min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen017_read_file_30min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen018_get_stock_price_7min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen019_get_weather_1374min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen020_track_package_360min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen021_web_search_155min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen022_run_shell_181min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen023_read_file_30min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen024_get_stock_price_11min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen025_get_weather_2370min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen026_track_package_360min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen027_web_search_466min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen028_run_shell_395min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen029_read_file_30min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen030_get_stock_price_25min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen031_get_weather_41min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen032_track_package_360min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen033_web_search_920min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen034_run_shell_244min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen035_read_file_30min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen000_get_stock_price_7min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen001_get_weather_412min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen002_track_package_360min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen003_web_search_1079min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen004_run_shell_539min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen005_read_file_30min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen006_get_stock_price_8min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen007_get_weather_467min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen008_track_package_360min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen009_web_search_180min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen010_run_shell_664min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen011_read_file_30min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen012_get_stock_price_11min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen013_get_weather_1179min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen014_track_package_360min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen015_web_search_145min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen016_run_shell_259min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen017_read_file_30min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen018_get_stock_price_3min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen019_get_weather_1271min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen020_track_package_360min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen021_web_search_617min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen022_run_shell_80min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen023_read_file_30min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen024_get_stock_price_26min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen025_get_weather_2559min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen026_track_package_360min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen027_web_search_561min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen028_run_shell_1060min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen029_read_file_30min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen030_get_stock_price_4min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen031_get_weather_35min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen032_track_package_360min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen033_web_search_414min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen034_run_shell_86min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen035_read_file_30min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        }
+      ]
+    },
+    "t1_baseline": {
+      "accuracy": 0.4306,
+      "n": 72,
+      "wilson95": 0.1144,
+      "cases": [
+        {
+          "id": "gen000_get_stock_price_5min",
+          "predicted": "tool",
+          "expected": "no_tool",
+          "ok": false
+        },
+        {
+          "id": "gen001_get_weather_65min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen002_track_package_360min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen003_web_search_557min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen004_run_shell_91min",
+          "predicted": "no_tool",
+          "expected": "tool",
+          "ok": false
+        },
+        {
+          "id": "gen005_read_file_30min",
+          "predicted": "no_tool",
+          "expected": "tool",
+          "ok": false
+        },
+        {
+          "id": "gen006_get_stock_price_9min",
+          "predicted": "tool",
+          "expected": "no_tool",
+          "ok": false
+        },
+        {
+          "id": "gen007_get_weather_172min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen008_track_package_360min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen009_web_search_133min",
+          "predicted": "tool",
+          "expected": "no_tool",
+          "ok": false
+        },
+        {
+          "id": "gen010_run_shell_651min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen011_read_file_30min",
+          "predicted": "no_tool",
+          "expected": "tool",
+          "ok": false
+        },
+        {
+          "id": "gen012_get_stock_price_3min",
+          "predicted": "tool",
+          "expected": "no_tool",
+          "ok": false
+        },
+        {
+          "id": "gen013_get_weather_233min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen014_track_package_360min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen015_web_search_136min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen016_run_shell_99min",
+          "predicted": "no_tool",
+          "expected": "tool",
+          "ok": false
+        },
+        {
+          "id": "gen017_read_file_30min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen018_get_stock_price_7min",
+          "predicted": "tool",
+          "expected": "no_tool",
+          "ok": false
+        },
+        {
+          "id": "gen019_get_weather_1374min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen020_track_package_360min",
+          "predicted": "no_tool",
+          "expected": "tool",
+          "ok": false
+        },
+        {
+          "id": "gen021_web_search_155min",
+          "predicted": "tool",
+          "expected": "no_tool",
+          "ok": false
+        },
+        {
+          "id": "gen022_run_shell_181min",
+          "predicted": "no_tool",
+          "expected": "tool",
+          "ok": false
+        },
+        {
+          "id": "gen023_read_file_30min",
+          "predicted": "no_tool",
+          "expected": "tool",
+          "ok": false
+        },
+        {
+          "id": "gen024_get_stock_price_11min",
+          "predicted": "tool",
+          "expected": "no_tool",
+          "ok": false
+        },
+        {
+          "id": "gen025_get_weather_2370min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen026_track_package_360min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen027_web_search_466min",
+          "predicted": "tool",
+          "expected": "no_tool",
+          "ok": false
+        },
+        {
+          "id": "gen028_run_shell_395min",
+          "predicted": "no_tool",
+          "expected": "tool",
+          "ok": false
+        },
+        {
+          "id": "gen029_read_file_30min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen030_get_stock_price_25min",
+          "predicted": "tool",
+          "expected": "no_tool",
+          "ok": false
+        },
+        {
+          "id": "gen031_get_weather_41min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen032_track_package_360min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen033_web_search_920min",
+          "predicted": "tool",
+          "expected": "no_tool",
+          "ok": false
+        },
+        {
+          "id": "gen034_run_shell_244min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen035_read_file_30min",
+          "predicted": "no_tool",
+          "expected": "tool",
+          "ok": false
+        },
+        {
+          "id": "gen000_get_stock_price_7min",
+          "predicted": "tool",
+          "expected": "no_tool",
+          "ok": false
+        },
+        {
+          "id": "gen001_get_weather_412min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen002_track_package_360min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen003_web_search_1079min",
+          "predicted": "tool",
+          "expected": "no_tool",
+          "ok": false
+        },
+        {
+          "id": "gen004_run_shell_539min",
+          "predicted": "no_tool",
+          "expected": "tool",
+          "ok": false
+        },
+        {
+          "id": "gen005_read_file_30min",
+          "predicted": "no_tool",
+          "expected": "tool",
+          "ok": false
+        },
+        {
+          "id": "gen006_get_stock_price_8min",
+          "predicted": "tool",
+          "expected": "no_tool",
+          "ok": false
+        },
+        {
+          "id": "gen007_get_weather_467min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen008_track_package_360min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen009_web_search_180min",
+          "predicted": "tool",
+          "expected": "no_tool",
+          "ok": false
+        },
+        {
+          "id": "gen010_run_shell_664min",
+          "predicted": "no_tool",
+          "expected": "tool",
+          "ok": false
+        },
+        {
+          "id": "gen011_read_file_30min",
+          "predicted": "no_tool",
+          "expected": "tool",
+          "ok": false
+        },
+        {
+          "id": "gen012_get_stock_price_11min",
+          "predicted": "tool",
+          "expected": "no_tool",
+          "ok": false
+        },
+        {
+          "id": "gen013_get_weather_1179min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen014_track_package_360min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen015_web_search_145min",
+          "predicted": "tool",
+          "expected": "no_tool",
+          "ok": false
+        },
+        {
+          "id": "gen016_run_shell_259min",
+          "predicted": "no_tool",
+          "expected": "tool",
+          "ok": false
+        },
+        {
+          "id": "gen017_read_file_30min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen018_get_stock_price_3min",
+          "predicted": "tool",
+          "expected": "no_tool",
+          "ok": false
+        },
+        {
+          "id": "gen019_get_weather_1271min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen020_track_package_360min",
+          "predicted": "no_tool",
+          "expected": "tool",
+          "ok": false
+        },
+        {
+          "id": "gen021_web_search_617min",
+          "predicted": "tool",
+          "expected": "no_tool",
+          "ok": false
+        },
+        {
+          "id": "gen022_run_shell_80min",
+          "predicted": "no_tool",
+          "expected": "tool",
+          "ok": false
+        },
+        {
+          "id": "gen023_read_file_30min",
+          "predicted": "no_tool",
+          "expected": "tool",
+          "ok": false
+        },
+        {
+          "id": "gen024_get_stock_price_26min",
+          "predicted": "tool",
+          "expected": "no_tool",
+          "ok": false
+        },
+        {
+          "id": "gen025_get_weather_2559min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen026_track_package_360min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen027_web_search_561min",
+          "predicted": "tool",
+          "expected": "no_tool",
+          "ok": false
+        },
+        {
+          "id": "gen028_run_shell_1060min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen029_read_file_30min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen030_get_stock_price_4min",
+          "predicted": "tool",
+          "expected": "no_tool",
+          "ok": false
+        },
+        {
+          "id": "gen031_get_weather_35min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen032_track_package_360min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen033_web_search_414min",
+          "predicted": "tool",
+          "expected": "no_tool",
+          "ok": false
+        },
+        {
+          "id": "gen034_run_shell_86min",
+          "predicted": "no_tool",
+          "expected": "tool",
+          "ok": false
+        },
+        {
+          "id": "gen035_read_file_30min",
+          "predicted": "no_tool",
+          "expected": "tool",
+          "ok": false
+        }
+      ]
+    },
+    "t1_control_label_flip": {
+      "accuracy": 0.3056,
+      "n": 72,
+      "wilson95": 0.1064,
+      "cases": [
+        {
+          "id": "gen000_get_stock_price_5min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen001_get_weather_65min",
+          "predicted": "no_tool",
+          "expected": "tool",
+          "ok": false
+        },
+        {
+          "id": "gen002_track_package_360min",
+          "predicted": "no_tool",
+          "expected": "tool",
+          "ok": false
+        },
+        {
+          "id": "gen003_web_search_557min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen004_run_shell_91min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen005_read_file_30min",
+          "predicted": "no_tool",
+          "expected": "tool",
+          "ok": false
+        },
+        {
+          "id": "gen006_get_stock_price_9min",
+          "predicted": "tool",
+          "expected": "no_tool",
+          "ok": false
+        },
+        {
+          "id": "gen007_get_weather_172min",
+          "predicted": "no_tool",
+          "expected": "tool",
+          "ok": false
+        },
+        {
+          "id": "gen008_track_package_360min",
+          "predicted": "no_tool",
+          "expected": "tool",
+          "ok": false
+        },
+        {
+          "id": "gen009_web_search_133min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen010_run_shell_651min",
+          "predicted": "no_tool",
+          "expected": "tool",
+          "ok": false
+        },
+        {
+          "id": "gen011_read_file_30min",
+          "predicted": "no_tool",
+          "expected": "tool",
+          "ok": false
+        },
+        {
+          "id": "gen012_get_stock_price_3min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen013_get_weather_233min",
+          "predicted": "no_tool",
+          "expected": "tool",
+          "ok": false
+        },
+        {
+          "id": "gen014_track_package_360min",
+          "predicted": "no_tool",
+          "expected": "tool",
+          "ok": false
+        },
+        {
+          "id": "gen015_web_search_136min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen016_run_shell_99min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen017_read_file_30min",
+          "predicted": "no_tool",
+          "expected": "tool",
+          "ok": false
+        },
+        {
+          "id": "gen018_get_stock_price_7min",
+          "predicted": "tool",
+          "expected": "no_tool",
+          "ok": false
+        },
+        {
+          "id": "gen019_get_weather_1374min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen020_track_package_360min",
+          "predicted": "no_tool",
+          "expected": "tool",
+          "ok": false
+        },
+        {
+          "id": "gen021_web_search_155min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen022_run_shell_181min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen023_read_file_30min",
+          "predicted": "no_tool",
+          "expected": "tool",
+          "ok": false
+        },
+        {
+          "id": "gen024_get_stock_price_11min",
+          "predicted": "tool",
+          "expected": "no_tool",
+          "ok": false
+        },
+        {
+          "id": "gen025_get_weather_2370min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen026_track_package_360min",
+          "predicted": "no_tool",
+          "expected": "tool",
+          "ok": false
+        },
+        {
+          "id": "gen027_web_search_466min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen028_run_shell_395min",
+          "predicted": "no_tool",
+          "expected": "tool",
+          "ok": false
+        },
+        {
+          "id": "gen029_read_file_30min",
+          "predicted": "no_tool",
+          "expected": "tool",
+          "ok": false
+        },
+        {
+          "id": "gen030_get_stock_price_25min",
+          "predicted": "tool",
+          "expected": "no_tool",
+          "ok": false
+        },
+        {
+          "id": "gen031_get_weather_41min",
+          "predicted": "no_tool",
+          "expected": "tool",
+          "ok": false
+        },
+        {
+          "id": "gen032_track_package_360min",
+          "predicted": "no_tool",
+          "expected": "tool",
+          "ok": false
+        },
+        {
+          "id": "gen033_web_search_920min",
+          "predicted": "tool",
+          "expected": "no_tool",
+          "ok": false
+        },
+        {
+          "id": "gen034_run_shell_244min",
+          "predicted": "no_tool",
+          "expected": "tool",
+          "ok": false
+        },
+        {
+          "id": "gen035_read_file_30min",
+          "predicted": "no_tool",
+          "expected": "tool",
+          "ok": false
+        },
+        {
+          "id": "gen000_get_stock_price_7min",
+          "predicted": "tool",
+          "expected": "no_tool",
+          "ok": false
+        },
+        {
+          "id": "gen001_get_weather_412min",
+          "predicted": "no_tool",
+          "expected": "tool",
+          "ok": false
+        },
+        {
+          "id": "gen002_track_package_360min",
+          "predicted": "no_tool",
+          "expected": "tool",
+          "ok": false
+        },
+        {
+          "id": "gen003_web_search_1079min",
+          "predicted": "tool",
+          "expected": "no_tool",
+          "ok": false
+        },
+        {
+          "id": "gen004_run_shell_539min",
+          "predicted": "no_tool",
+          "expected": "tool",
+          "ok": false
+        },
+        {
+          "id": "gen005_read_file_30min",
+          "predicted": "no_tool",
+          "expected": "tool",
+          "ok": false
+        },
+        {
+          "id": "gen006_get_stock_price_8min",
+          "predicted": "tool",
+          "expected": "no_tool",
+          "ok": false
+        },
+        {
+          "id": "gen007_get_weather_467min",
+          "predicted": "no_tool",
+          "expected": "tool",
+          "ok": false
+        },
+        {
+          "id": "gen008_track_package_360min",
+          "predicted": "no_tool",
+          "expected": "tool",
+          "ok": false
+        },
+        {
+          "id": "gen009_web_search_180min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen010_run_shell_664min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen011_read_file_30min",
+          "predicted": "no_tool",
+          "expected": "tool",
+          "ok": false
+        },
+        {
+          "id": "gen012_get_stock_price_11min",
+          "predicted": "tool",
+          "expected": "no_tool",
+          "ok": false
+        },
+        {
+          "id": "gen013_get_weather_1179min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen014_track_package_360min",
+          "predicted": "no_tool",
+          "expected": "tool",
+          "ok": false
+        },
+        {
+          "id": "gen015_web_search_145min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen016_run_shell_259min",
+          "predicted": "no_tool",
+          "expected": "tool",
+          "ok": false
+        },
+        {
+          "id": "gen017_read_file_30min",
+          "predicted": "no_tool",
+          "expected": "tool",
+          "ok": false
+        },
+        {
+          "id": "gen018_get_stock_price_3min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen019_get_weather_1271min",
+          "predicted": "no_tool",
+          "expected": "tool",
+          "ok": false
+        },
+        {
+          "id": "gen020_track_package_360min",
+          "predicted": "no_tool",
+          "expected": "tool",
+          "ok": false
+        },
+        {
+          "id": "gen021_web_search_617min",
+          "predicted": "tool",
+          "expected": "no_tool",
+          "ok": false
+        },
+        {
+          "id": "gen022_run_shell_80min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen023_read_file_30min",
+          "predicted": "no_tool",
+          "expected": "tool",
+          "ok": false
+        },
+        {
+          "id": "gen024_get_stock_price_26min",
+          "predicted": "tool",
+          "expected": "no_tool",
+          "ok": false
+        },
+        {
+          "id": "gen025_get_weather_2559min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen026_track_package_360min",
+          "predicted": "no_tool",
+          "expected": "tool",
+          "ok": false
+        },
+        {
+          "id": "gen027_web_search_561min",
+          "predicted": "tool",
+          "expected": "no_tool",
+          "ok": false
+        },
+        {
+          "id": "gen028_run_shell_1060min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen029_read_file_30min",
+          "predicted": "no_tool",
+          "expected": "tool",
+          "ok": false
+        },
+        {
+          "id": "gen030_get_stock_price_4min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen031_get_weather_35min",
+          "predicted": "no_tool",
+          "expected": "tool",
+          "ok": false
+        },
+        {
+          "id": "gen032_track_package_360min",
+          "predicted": "no_tool",
+          "expected": "tool",
+          "ok": false
+        },
+        {
+          "id": "gen033_web_search_414min",
+          "predicted": "tool",
+          "expected": "no_tool",
+          "ok": false
+        },
+        {
+          "id": "gen034_run_shell_86min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen035_read_file_30min",
+          "predicted": "no_tool",
+          "expected": "tool",
+          "ok": false
+        }
+      ]
+    },
+    "t2": {
+      "median_ratio": 0.56,
+      "mean_ratio": 0.87,
+      "n": 9,
+      "cases": [
+        {
+          "task": "Write a 50-word summary of how transformers use attention.",
+          "predicted_sec": 8.0,
+          "wall_sec": 3.59,
+          "out_tokens": 62,
+          "ratio_pred_to_wall": 2.23
+        },
+        {
+          "task": "Write a 100-word summary of the water cycle.",
+          "predicted_sec": 2.5,
+          "wall_sec": 4.633,
+          "out_tokens": 135,
+          "ratio_pred_to_wall": 0.54
+        },
+        {
+          "task": "List 5 ways to reduce Python startup time, one sentence each",
+          "predicted_sec": 3.5,
+          "wall_sec": 6.196,
+          "out_tokens": 162,
+          "ratio_pred_to_wall": 0.56
+        },
+        {
+          "task": "Write a Python function that detects an anachronism in a sen",
+          "predicted_sec": 3.0,
+          "wall_sec": 7.696,
+          "out_tokens": 350,
+          "ratio_pred_to_wall": 0.39
+        },
+        {
+          "task": "Write a bash script to back up a directory and explain each ",
+          "predicted_sec": 8.5,
+          "wall_sec": 7.171,
+          "out_tokens": 350,
+          "ratio_pred_to_wall": 1.19
+        },
+        {
+          "task": "Explain the CAP theorem in 200 words.",
+          "predicted_sec": 8.0,
+          "wall_sec": 7.642,
+          "out_tokens": 225,
+          "ratio_pred_to_wall": 1.05
+        },
+        {
+          "task": "List 10 steps to debug a failing unit test, each step one se",
+          "predicted_sec": 3.0,
+          "wall_sec": 7.253,
+          "out_tokens": 211,
+          "ratio_pred_to_wall": 0.41
+        },
+        {
+          "task": "Write a short Rust function that finds the median of a slice",
+          "predicted_sec": 8.0,
+          "wall_sec": 8.07,
+          "out_tokens": 500,
+          "ratio_pred_to_wall": 0.99
+        },
+        {
+          "task": "Draft a 3-paragraph project plan for migrating a monorepo to",
+          "predicted_sec": 8.0,
+          "wall_sec": 16.896,
+          "out_tokens": 400,
+          "ratio_pred_to_wall": 0.47
+        }
+      ]
+    },
+    "t3_with_time_stack": {
+      "claim_accuracy": 0.9583,
+      "n_claims": 72,
+      "wilson95": 0.0462,
+      "cases": [
+        {
+          "id": "gen_log000_none",
+          "predicted": [
+            0,
+            0,
+            0
+          ],
+          "truth": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "id": "gen_log001_ordering",
+          "predicted": [
+            1,
+            0,
+            0
+          ],
+          "truth": [
+            1,
+            0,
+            0
+          ]
+        },
+        {
+          "id": "gen_log002_staleness",
+          "predicted": [
+            0,
+            1,
+            0
+          ],
+          "truth": [
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "id": "gen_log003_none",
+          "predicted": [
+            0,
+            0,
+            0
+          ],
+          "truth": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "id": "gen_log004_ordering",
+          "predicted": [
+            1,
+            0,
+            0
+          ],
+          "truth": [
+            1,
+            0,
+            0
+          ]
+        },
+        {
+          "id": "gen_log005_staleness",
+          "predicted": [
+            0,
+            1,
+            0
+          ],
+          "truth": [
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "id": "gen_log006_none",
+          "predicted": [
+            0,
+            0,
+            0
+          ],
+          "truth": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "id": "gen_log007_ordering",
+          "predicted": [
+            0,
+            0,
+            0
+          ],
+          "truth": [
+            1,
+            0,
+            0
+          ]
+        },
+        {
+          "id": "gen_log008_staleness",
+          "predicted": [
+            0,
+            1,
+            0
+          ],
+          "truth": [
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "id": "gen_log009_none",
+          "predicted": [
+            0,
+            0,
+            0
+          ],
+          "truth": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "id": "gen_log010_ordering",
+          "predicted": [
+            0,
+            0,
+            0
+          ],
+          "truth": [
+            1,
+            0,
+            0
+          ]
+        },
+        {
+          "id": "gen_log011_staleness",
+          "predicted": [
+            0,
+            1,
+            0
+          ],
+          "truth": [
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "id": "gen_log000_none",
+          "predicted": [
+            0,
+            0,
+            0
+          ],
+          "truth": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "id": "gen_log001_ordering",
+          "predicted": [
+            1,
+            0,
+            1
+          ],
+          "truth": [
+            1,
+            0,
+            0
+          ]
+        },
+        {
+          "id": "gen_log002_staleness",
+          "predicted": [
+            0,
+            1,
+            0
+          ],
+          "truth": [
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "id": "gen_log003_none",
+          "predicted": [
+            0,
+            0,
+            0
+          ],
+          "truth": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "id": "gen_log004_ordering",
+          "predicted": [
+            1,
+            0,
+            0
+          ],
+          "truth": [
+            1,
+            0,
+            0
+          ]
+        },
+        {
+          "id": "gen_log005_staleness",
+          "predicted": [
+            0,
+            1,
+            0
+          ],
+          "truth": [
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "id": "gen_log006_none",
+          "predicted": [
+            0,
+            0,
+            0
+          ],
+          "truth": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "id": "gen_log007_ordering",
+          "predicted": [
+            1,
+            0,
+            0
+          ],
+          "truth": [
+            1,
+            0,
+            0
+          ]
+        },
+        {
+          "id": "gen_log008_staleness",
+          "predicted": [
+            0,
+            1,
+            0
+          ],
+          "truth": [
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "id": "gen_log009_none",
+          "predicted": [
+            0,
+            0,
+            0
+          ],
+          "truth": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "id": "gen_log010_ordering",
+          "predicted": [
+            1,
+            0,
+            0
+          ],
+          "truth": [
+            1,
+            0,
+            0
+          ]
+        },
+        {
+          "id": "gen_log011_staleness",
+          "predicted": [
+            0,
+            1,
+            0
+          ],
+          "truth": [
+            0,
+            1,
+            0
+          ]
+        }
+      ]
+    },
+    "t3_baseline": {
+      "claim_accuracy": 0.9306,
+      "n_claims": 72,
+      "wilson95": 0.0587,
+      "cases": [
+        {
+          "id": "gen_log000_none",
+          "predicted": [
+            0,
+            0,
+            0
+          ],
+          "truth": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "id": "gen_log001_ordering",
+          "predicted": [
+            1,
+            0,
+            0
+          ],
+          "truth": [
+            1,
+            0,
+            0
+          ]
+        },
+        {
+          "id": "gen_log002_staleness",
+          "predicted": [
+            0,
+            1,
+            0
+          ],
+          "truth": [
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "id": "gen_log003_none",
+          "predicted": [
+            0,
+            0,
+            0
+          ],
+          "truth": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "id": "gen_log004_ordering",
+          "predicted": [
+            1,
+            0,
+            0
+          ],
+          "truth": [
+            1,
+            0,
+            0
+          ]
+        },
+        {
+          "id": "gen_log005_staleness",
+          "predicted": [
+            0,
+            1,
+            0
+          ],
+          "truth": [
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "id": "gen_log006_none",
+          "predicted": [
+            1,
+            0,
+            0
+          ],
+          "truth": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "id": "gen_log007_ordering",
+          "predicted": [
+            1,
+            0,
+            0
+          ],
+          "truth": [
+            1,
+            0,
+            0
+          ]
+        },
+        {
+          "id": "gen_log008_staleness",
+          "predicted": [
+            0,
+            1,
+            0
+          ],
+          "truth": [
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "id": "gen_log009_none",
+          "predicted": [
+            0,
+            0,
+            0
+          ],
+          "truth": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "id": "gen_log010_ordering",
+          "predicted": [
+            0,
+            0,
+            0
+          ],
+          "truth": [
+            1,
+            0,
+            0
+          ]
+        },
+        {
+          "id": "gen_log011_staleness",
+          "predicted": [
+            0,
+            1,
+            0
+          ],
+          "truth": [
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "id": "gen_log000_none",
+          "predicted": [
+            0,
+            0,
+            0
+          ],
+          "truth": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "id": "gen_log001_ordering",
+          "predicted": [
+            1,
+            0,
+            1
+          ],
+          "truth": [
+            1,
+            0,
+            0
+          ]
+        },
+        {
+          "id": "gen_log002_staleness",
+          "predicted": [
+            0,
+            1,
+            0
+          ],
+          "truth": [
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "id": "gen_log003_none",
+          "predicted": [
+            0,
+            0,
+            0
+          ],
+          "truth": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "id": "gen_log004_ordering",
+          "predicted": [
+            1,
+            0,
+            0
+          ],
+          "truth": [
+            1,
+            0,
+            0
+          ]
+        },
+        {
+          "id": "gen_log005_staleness",
+          "predicted": [
+            0,
+            1,
+            0
+          ],
+          "truth": [
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "id": "gen_log006_none",
+          "predicted": [
+            0,
+            1,
+            0
+          ],
+          "truth": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "id": "gen_log007_ordering",
+          "predicted": [
+            1,
+            0,
+            0
+          ],
+          "truth": [
+            1,
+            0,
+            0
+          ]
+        },
+        {
+          "id": "gen_log008_staleness",
+          "predicted": [
+            0,
+            1,
+            0
+          ],
+          "truth": [
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "id": "gen_log009_none",
+          "predicted": [
+            0,
+            1,
+            0
+          ],
+          "truth": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "id": "gen_log010_ordering",
+          "predicted": [
+            1,
+            0,
+            0
+          ],
+          "truth": [
+            1,
+            0,
+            0
+          ]
+        },
+        {
+          "id": "gen_log011_staleness",
+          "predicted": [
+            0,
+            1,
+            0
+          ],
+          "truth": [
+            0,
+            1,
+            0
+          ]
+        }
+      ]
+    },
+    "t1_dc_with_time_stack": {
+      "accuracy": 1.0,
+      "n": 72,
+      "wilson95": 0.0,
+      "cases": [
+        {
+          "id": "gen000_get_stock_price_5min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen001_get_weather_65min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen002_track_package_360min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen003_web_search_557min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen004_run_shell_91min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen005_read_file_30min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen006_get_stock_price_9min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen007_get_weather_172min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen008_track_package_360min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen009_web_search_133min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen010_run_shell_651min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen011_read_file_30min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen012_get_stock_price_3min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen013_get_weather_233min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen014_track_package_360min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen015_web_search_136min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen016_run_shell_99min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen017_read_file_30min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen018_get_stock_price_7min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen019_get_weather_1374min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen020_track_package_360min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen021_web_search_155min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen022_run_shell_181min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen023_read_file_30min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen024_get_stock_price_11min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen025_get_weather_2370min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen026_track_package_360min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen027_web_search_466min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen028_run_shell_395min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen029_read_file_30min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen030_get_stock_price_25min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen031_get_weather_41min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen032_track_package_360min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen033_web_search_920min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen034_run_shell_244min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen035_read_file_30min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen000_get_stock_price_7min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen001_get_weather_412min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen002_track_package_360min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen003_web_search_1079min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen004_run_shell_539min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen005_read_file_30min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen006_get_stock_price_8min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen007_get_weather_467min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen008_track_package_360min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen009_web_search_180min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen010_run_shell_664min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen011_read_file_30min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen012_get_stock_price_11min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen013_get_weather_1179min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen014_track_package_360min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen015_web_search_145min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen016_run_shell_259min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen017_read_file_30min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen018_get_stock_price_3min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen019_get_weather_1271min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen020_track_package_360min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen021_web_search_617min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen022_run_shell_80min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen023_read_file_30min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen024_get_stock_price_26min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen025_get_weather_2559min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen026_track_package_360min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen027_web_search_561min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen028_run_shell_1060min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen029_read_file_30min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen030_get_stock_price_4min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen031_get_weather_35min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen032_track_package_360min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen033_web_search_414min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen034_run_shell_86min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen035_read_file_30min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        }
+      ]
+    },
+    "t1_dc_control_label_flip": {
+      "accuracy": 0.9861,
+      "n": 72,
+      "wilson95": 0.027,
+      "cases": [
+        {
+          "id": "gen000_get_stock_price_5min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen001_get_weather_65min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen002_track_package_360min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen003_web_search_557min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen004_run_shell_91min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen005_read_file_30min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen006_get_stock_price_9min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen007_get_weather_172min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen008_track_package_360min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen009_web_search_133min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen010_run_shell_651min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen011_read_file_30min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen012_get_stock_price_3min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen013_get_weather_233min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen014_track_package_360min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen015_web_search_136min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen016_run_shell_99min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen017_read_file_30min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen018_get_stock_price_7min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen019_get_weather_1374min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen020_track_package_360min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen021_web_search_155min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen022_run_shell_181min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen023_read_file_30min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen024_get_stock_price_11min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen025_get_weather_2370min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen026_track_package_360min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen027_web_search_466min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen028_run_shell_395min",
+          "predicted": "no_tool",
+          "expected": "tool",
+          "ok": false
+        },
+        {
+          "id": "gen029_read_file_30min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen030_get_stock_price_25min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen031_get_weather_41min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen032_track_package_360min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen033_web_search_920min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen034_run_shell_244min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen035_read_file_30min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen000_get_stock_price_7min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen001_get_weather_412min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen002_track_package_360min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen003_web_search_1079min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen004_run_shell_539min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen005_read_file_30min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen006_get_stock_price_8min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen007_get_weather_467min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen008_track_package_360min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen009_web_search_180min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen010_run_shell_664min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen011_read_file_30min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen012_get_stock_price_11min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen013_get_weather_1179min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen014_track_package_360min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen015_web_search_145min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen016_run_shell_259min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen017_read_file_30min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen018_get_stock_price_3min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen019_get_weather_1271min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen020_track_package_360min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen021_web_search_617min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen022_run_shell_80min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen023_read_file_30min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen024_get_stock_price_26min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen025_get_weather_2559min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen026_track_package_360min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen027_web_search_561min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen028_run_shell_1060min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen029_read_file_30min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen030_get_stock_price_4min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen031_get_weather_35min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen032_track_package_360min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen033_web_search_414min",
+          "predicted": "no_tool",
+          "expected": "no_tool",
+          "ok": true
+        },
+        {
+          "id": "gen034_run_shell_86min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        },
+        {
+          "id": "gen035_read_file_30min",
+          "predicted": "tool",
+          "expected": "tool",
+          "ok": true
+        }
+      ]
+    }
+  },
+  "ablation_delta": {
+    "t1_tool_alignment_delta": 0.5694,
+    "t1_control_delta_from_with_harness": -0.6944,
+    "t3_temporal_critique_delta": 0.0277,
+    "t1_dc_control_delta": -0.0139
+  }
+}

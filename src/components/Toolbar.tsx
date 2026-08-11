@@ -1,0 +1,139 @@
+import type { ThinkingMode, TokenUsage } from "../types";
+import { useI18n } from "../i18n";
+
+interface ToolbarProps {
+  thinkingMode: ThinkingMode;
+  onThinkingModeChange: (mode: ThinkingMode) => void;
+  contextUsage: number;
+  sessionCost: number;
+  sessionTokens: TokenUsage;
+  showMonitor: boolean;
+  showSidebar: boolean;
+  showTools: boolean;
+  onToggleMonitor: () => void;
+  onToggleSidebar: () => void;
+  onToggleTools: () => void;
+  onOpenSettings: () => void;
+  apiKeyConfigured: boolean;
+  model: string;
+  onSwitchModel: () => void;
+  switchDisabled?: boolean;
+}
+
+function fmt(n: number): string {
+  if (n > 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`;
+  if (n > 1_000) return `${(n / 1000).toFixed(0)}K`;
+  return `${n}`;
+}
+
+export default function Toolbar({
+  thinkingMode,
+  onThinkingModeChange,
+  contextUsage,
+  sessionCost,
+  sessionTokens,
+  showMonitor,
+  showSidebar,
+  showTools,
+  onToggleMonitor,
+  onToggleSidebar,
+  onToggleTools,
+  onOpenSettings,
+  apiKeyConfigured,
+  model,
+  onSwitchModel,
+  switchDisabled,
+}: ToolbarProps) {
+  const { t } = useI18n();
+  const totalTokens = sessionTokens.input + sessionTokens.output;
+  const contextPct = Math.min((contextUsage / 1_000_000) * 100, 100);
+
+  return (
+    <div className="toolbar">
+      <div className="toolbar-left">
+        <button
+          className={`toolbar-btn ${showSidebar ? "active" : ""}`}
+          onClick={onToggleSidebar}
+          title={t("toolbar.toggleFiles")}
+        >
+          {t("toolbar.files")}
+        </button>
+        <span className="toolbar-brand">DeepSeek Code</span>
+        <button
+          className="model-switch"
+          onClick={onSwitchModel}
+          disabled={!apiKeyConfigured || switchDisabled}
+          title={!apiKeyConfigured ? t("toolbar.connectFirst") : switchDisabled ? t("toolbar.switchDisabled") : t("toolbar.switchModel", { model: model.includes("flash") ? "Pro" : "Flash" })}
+        >
+          <span className={`switch-track switch-${model.includes("flash") ? "flash" : "pro"}`}>
+            <span className="switch-thumb">
+              <span className="switch-thumb-text">{model.includes("flash") ? "Flash" : "Pro"}</span>
+            </span>
+          </span>
+        </button>
+        <span className="toolbar-version">v0.1</span>
+      </div>
+
+      <div className="toolbar-center">
+        <div className="mode-selector">
+          <button
+            className={`mode-btn ${thinkingMode === "non-think" ? "active" : ""}`}
+            onClick={() => onThinkingModeChange("non-think")}
+          >
+            Fast
+          </button>
+          <button
+            className={`mode-btn ${thinkingMode === "think-high" ? "active" : ""}`}
+            onClick={() => onThinkingModeChange("think-high")}
+          >
+            Think
+          </button>
+          <button
+            className={`mode-btn ${thinkingMode === "think-max" ? "active" : ""}`}
+            onClick={() => onThinkingModeChange("think-max")}
+          >
+            Deep
+          </button>
+        </div>
+      </div>
+
+      <div className="toolbar-right">
+        <div className="toolbar-stats">
+          <span className="toolbar-stat">
+            {t("toolbar.ctx")} <span className="toolbar-stat-value">{contextPct.toFixed(0)}%</span>
+          </span>
+          <span className="toolbar-stat">
+            <span className="toolbar-stat-value">{fmt(totalTokens)}</span> {t("toolbar.tok")}
+          </span>
+          <span className="toolbar-stat">
+            <span className="toolbar-stat-value">${sessionCost.toFixed(3)}</span>
+          </span>
+        </div>
+        <button
+          className={`toolbar-btn ${showMonitor ? "active" : ""}`}
+          onClick={onToggleMonitor}
+          title={t("toolbar.togglePanel")}
+        >
+          {t("toolbar.panel")}
+        </button>
+        <button
+          className={`toolbar-btn toolbar-icon-btn ${showTools ? "active" : ""}`}
+          onClick={onToggleTools}
+          title={t("toolbar.toggleTools")}
+        >
+          <svg
+            width="15" height="15" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            <polyline points="4 17 10 11 4 5" />
+            <line x1="12" y1="19" x2="20" y2="19" />
+          </svg>
+        </button>
+        <button className="toolbar-btn" onClick={onOpenSettings} title={t("toolbar.openSettings")}>
+          {apiKeyConfigured ? t("toolbar.settings") : t("toolbar.connect")}
+        </button>
+      </div>
+    </div>
+  );
+}
