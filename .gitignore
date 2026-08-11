@@ -11,5 +11,10 @@ src-tauri/gen/
 # Personal research (user's own work; excluded from the repo by default)
 research/
 
+# Internal working docs (kept local, not published)
+时间戳harness测试报告.md
+目标模式使用指南.md
+设计审查与优化清单.md
+
 # Local benchmark scratch
 cache_probe_result.json
