@@ -224,9 +224,23 @@ impl ContextEngine {
             return Ok(());
         }
 
-        let mut entries = tokio::fs::read_dir(dir)
-            .await
-            .map_err(|e| format!("Cannot read dir: {}", e))?;
+        let mut entries = match tokio::fs::read_dir(dir).await {
+            Ok(e) => e,
+            Err(e) => {
+                // macOS TCC / permissions: a packaged app lacks the terminal's
+                // inherited access to protected folders (Desktop/Documents/
+                // Downloads). Skip unreadable dirs instead of failing the
+                // whole workspace scan.
+                let name = dir.file_name().unwrap_or_default().to_string_lossy();
+                output.push_str(&format!(
+                    "{}⚠ {}/ (unreadable: {})\n",
+                    "  ".repeat(depth),
+                    name,
+                    e
+                ));
+                return Ok(());
+            }
+        };
 
         let mut items = Vec::new();
         while let Ok(Some(entry)) = entries.next_entry().await {

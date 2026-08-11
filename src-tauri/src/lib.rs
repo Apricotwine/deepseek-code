@@ -27,9 +27,14 @@ struct AppState {
 /// Workspace fallback for packaged builds — a Finder-launched app has no
 /// meaningful cwd, so default to the user's home directory instead of `/`.
 fn default_workspace_root() -> PathBuf {
-    std::env::var("HOME")
+    let home = std::env::var("HOME")
         .map(PathBuf::from)
-        .unwrap_or_else(|_| std::env::current_dir().unwrap_or_else(|_| PathBuf::from("/")))
+        .unwrap_or_else(|_| std::env::current_dir().unwrap_or_else(|_| PathBuf::from("/")));
+    // Never scan $HOME wholesale: macOS TCC protects Desktop/Documents/
+    // Downloads, and a Finder-launched (packaged) app lacks the terminal's
+    // inherited permissions — scanning home fails with EPERM. Use a dedicated
+    // safe workspace folder instead.
+    home.join("DeepSeekCodeWorkspace")
 }
 
 /// One-time migration: sessions used to live under the workspace root's
@@ -76,6 +81,11 @@ async fn init_agent(
         Some(ref p) if !p.is_empty() => PathBuf::from(p),
         _ => default_workspace_root(),
     };
+    if !root.exists() {
+        tokio::fs::create_dir_all(&root)
+            .await
+            .map_err(|e| format!("Cannot create workspace: {}", e))?;
+    }
     let sessions_dir = app_handle
         .path()
         .app_data_dir()
