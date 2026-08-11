@@ -19,5 +19,8 @@ research/
 # Paper draft (kept local, not published)
 paper/
 
+# Benchmark scripts & result artifacts (internal verification assets)
+benchmarks/
+
 # Local benchmark scratch
 cache_probe_result.json

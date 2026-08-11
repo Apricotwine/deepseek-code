@@ -86,7 +86,6 @@ src-tauri/src/
   tools.rs          本地工具执行 + 符号链接安全 + 内容级新鲜度嗅探
   api.rs            DeepSeek 兼容端点（重试退避 / 取消感知 / 流式回退）
   session.rs        会话持久化（含 goal + plan）
-benchmarks/         时间矩阵 T1-T9、目标推进探针、缓存命中探针
 ```
 
 ## 🚀 安装与运行
@@ -133,7 +132,9 @@ API Key：在 [platform.deepseek.com](https://platform.deepseek.com) 获取，�
 
 ## 📊 验证与基准
 
-**时间感知（72 用例 × 双模型，`benchmarks/temporal_harness_bench_large.py`）**
+以下为内部验证数据（benchmark 脚本与结果在仓库外维护）：
+
+**时间感知（72 用例 × 双模型）**
 
 | 探针 | Flash 基线 → TAL | Pro 基线 → TAL |
 |---|---:|---:|
@@ -142,12 +143,12 @@ API Key：在 [platform.deepseek.com](https://platform.deepseek.com) 获取，�
 | T1 决策链 + 翻转标签 | **98.6%** | **98.6%** |
 | T3 时间一致性审计 | 93.1% → 95.8% | 93.1% → 95.8% |
 
-**目标模式（真实工具执行，`benchmarks/goal_advance_probe.py --batch`）**
+**目标模式（真实工具执行）**
 
 - 3/3 目标自动完成，平均 4.7 轮
 - 每个目标标记完成前都执行过验证（运行代码/测试），无空手完成
 
-**缓存命中（`benchmarks/cache_probe.py`）**
+**缓存命中**
 
 - 无 TAL：96.5%–98.0% 缓存占比；有 TAL：**99.4%–99.5%**
 
