@@ -1,12 +1,14 @@
 # DeepSeek Code · 小鲸鱼
 
-> **为 DeepSeek V4 的 1M 上下文而生的桌面 AI 编程工作站**
-> A time-aware, goal-driven coding IDE, native to DeepSeek's 1M-token window.
+一个专为 **DeepSeek 模型**设计的民间 IDE 界面，界面也是好看的**鲸鱼和深海色**！
 
-DeepSeek Code 不是把大模型"塞进"IDE，而是围绕 DeepSeek V4 的特性重新设计了
-agent harness：1M 上下文让长会话成为常态，于是我们给模型装上**时钟**；模型
-会分不清"昨天"和"现在"，于是我们注入**新鲜度标注与决策链**；用户想要"设完
-就跑"的体验，于是我们实现**目标模式**——设定目标后自动推进直到完成。
+**项目特色：**
+
+1. 引入**时间戳 Harness**——给模型装上时钟，分清"昨天"和"现在"
+2. 为**上下文缓存**做了特殊优化——长会话也便宜
+3. **审美得到了一定的提升**——深海鲸鱼配色，告别呆板
+
+> 欢迎腻歪了 Codex、Claude Code 界面审美的小朋友来测！
 
 > **🤝 本项目由 DeepSeek V4 Flash 协助完成**——从时间感知层的设计、agent
 > harness 的实现与调优，到基准验证与文档整理，全程有它深度参与。
