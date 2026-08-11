@@ -86,7 +86,18 @@ src-tauri/src/
 benchmarks/         时间矩阵 T1-T9、目标推进探针、缓存命中探针
 ```
 
-## 🚀 快速开始
+## 🚀 安装与运行
+
+### 普通用户：下载安装包（推荐）
+
+从 **[Releases](https://github.com/Apricotwine/deepseek-code/releases)** 下载最新
+版 `DeepSeek Code.dmg`，打开后拖入 Applications 即可使用——**无需 Node / Rust /
+终端**。首次启动在设置中填入 DeepSeek API Key。
+
+### 开发者 / 贡献者：从源码构建
+
+> `npm run tauri dev` 是**开发模式**（前端热更新 + Rust 调试编译），不是最终
+> 用户的安装方式；普通用户请走上面的 Releases 安装包。
 
 **前置依赖**：
 
@@ -104,8 +115,14 @@ npm run tauri dev
 
 > 首次 `tauri dev` 会编译 Rust 后端，耗时几分钟属正常。
 
-首次启动在设置中填入 **DeepSeek API Key**（[platform.deepseek.com](https://platform.deepseek.com)
-获取；端点固定为 `api.deepseek.com` 的 Anthropic 兼容协议，模型
+打包安装包：
+
+```bash
+npm run tauri build   # 产出 src-tauri/target/release/bundle/dmg/*.dmg
+```
+
+API Key：在 [platform.deepseek.com](https://platform.deepseek.com) 获取，设置里
+填入即可（端点固定为 `api.deepseek.com` 的 Anthropic 兼容协议，模型
 `deepseek-v4-flash` / `deepseek-v4-pro`）。Key 仅存于本机系统设置文件。
 
 **遇到问题？** 前端纯 Vite 可直接 `npm run dev` 浏览器预览 UI；
