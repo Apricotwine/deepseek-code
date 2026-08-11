@@ -15,6 +15,8 @@
 
 ![whale](src-tauri/icons/32x32.png)
 
+![DeepSeek Code 界面](assets/screenshot.png)
+
 ## 为什么值得一看
 
 大模型的 agent harness 有一个被忽视的缺陷：**模型没有时间感**。1M 上下文让
