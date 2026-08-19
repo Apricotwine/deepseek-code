@@ -431,6 +431,24 @@ async fn send_harness_message(
         .app_data_dir()
         .map(|d| d.join("harness-sessions").to_string_lossy().to_string())
         .unwrap_or_else(|_| "/tmp/dsh-app-sessions".to_string());
+    // Retain at most 200 harness session logs so the app data dir doesn't grow
+    // unbounded across long-term use (each log is a small zstd JSONL).
+    if let Ok(rd) = tokio::fs::read_dir(&session_root).await {
+        let mut entries: Vec<(std::time::SystemTime, PathBuf)> = Vec::new();
+        let mut rd = rd;
+        while let Ok(Some(e)) = rd.next_entry().await {
+            if let Ok(md) = e.metadata().await {
+                let t = md.modified().unwrap_or(std::time::SystemTime::UNIX_EPOCH);
+                entries.push((t, e.path()));
+            }
+        }
+        if entries.len() > 200 {
+            entries.sort();
+            for (_, p) in entries.into_iter().take(entries.len() - 200) {
+                let _ = tokio::fs::remove_dir_all(p).await;
+            }
+        }
+    }
 
     let cfg = harness_backend::HarnessTurnConfig {
         node_bin: node_bin.to_string_lossy().to_string(),

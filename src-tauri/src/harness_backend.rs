@@ -371,16 +371,19 @@ pub async fn run_harness_turn(
         AgentStreamEvent::TurnEnd {
             finish_reason: finish_reason.clone(),
             token_usage: usage.clone(),
-            context_usage: 0,
+            // The harness usage chunk reports the turn's total input tokens —
+            // that IS the live context size the monitor should show.
+            context_usage: usage.input,
         },
     );
     let _ = proc.shutdown().await;
+    let context_usage = usage.input;
     Ok(HarnessTurnResult {
         message: final_text,
         thinking_content,
         token_usage: usage,
         finish_reason,
-        context_usage: 0,
+        context_usage,
     })
 }
 
