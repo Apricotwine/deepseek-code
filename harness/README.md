@@ -41,5 +41,8 @@ stdout 只输出换行分隔 JSON-RPC 2.0：`initialize` / `session/prompt` / `s
 - [x] TAL-L1 工具结果 `data_time`/horizon 注解插件（[tal-tool-result.ts](tal-tool-result.ts)，已真机验证）
 - [x] 后端接线：`send_harness_message` 命令 + 事件翻译层（[harness_backend.rs](../src-tauri/src/harness_backend.rs)），编译/单测通过
 - [x] 前端开关：`useHarness` 设置贯通 store/App/SettingsModal/ChatPanel/i18n，`npm run build` 通过
+- [x] 打包/vendor：`harness/package-runtime.sh` 产出闭包，Tauri resources + externalBin
+  （官方单文件 node）打进 dmg（82M 下载，含运行时 217M + node 136M）
+- [x] 后端解析：HARNESS_RUNTIME env → 打包资源 `_up_/harness-runtime` → 仓库本地
+  闭包 → tsx checkout 回退；会话持久化到应用数据目录
 - [ ] 可视化冒烟：运行 `tauri dev`，切到 Harness 内核发一条真实消息确认 UI 正常
-- [ ] 打包/vendor Harness runtime 为 Tauri sidecar（已产出 `lib/bin.js`；阻塞点与方案见 [VENDORING.md](VENDORING.md)）
