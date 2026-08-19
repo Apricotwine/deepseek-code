@@ -282,6 +282,7 @@ async fn send_harness_message(
     session_id: Option<String>,
     mode: Option<String>,
     sandbox: Option<String>,
+    context: Option<String>,
 ) -> Result<harness_backend::HarnessTurnResult, String> {
     let harness_cancel = {
         let st = state.lock().await;
@@ -447,7 +448,15 @@ async fn send_harness_message(
         system_prompt: format!("{persona}\n\n{tal}"),
     };
     let session_id = session_id.unwrap_or_else(|| "main".to_string());
-    harness_backend::run_harness_turn(&app, cfg, &session_id, &message, harness_cancel).await
+    // The Harness runtime is one-shot per process, so cross-turn continuity is
+    // carried by the IDE: prepend the recent conversation to the prompt.
+    let prompt = match context.as_deref().map(str::trim) {
+        Some(c) if !c.is_empty() => {
+            format!("## 之前的对话（IDE 维护的跨轮上下文）\n{c}\n\n## 用户最新消息\n{message}")
+        }
+        _ => message,
+    };
+    harness_backend::run_harness_turn(&app, cfg, &session_id, &prompt, harness_cancel).await
 }
 
 #[tauri::command]

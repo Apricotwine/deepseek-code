@@ -10,6 +10,22 @@ import { useI18n } from "../i18n";
 
 const MIN_RUNNING_MS = 600; // 工具完成得再快，也至少展示 600ms 的运行渐变
 
+/** Compact conversation context for the Harness kernel: the Harness runtime is
+ *  one-shot per process (a fresh session per turn), so the IDE carries the
+ *  conversation and injects the recent history into each prompt. */
+function buildHarnessContext(messages: Message[], maxTurns = 16, maxChars = 12000): string {
+  const recent = messages
+    .filter((m) => m.role === "user" || m.role === "assistant")
+    .slice(-maxTurns * 2);
+  let out = "";
+  for (const m of recent) {
+    const label = m.role === "user" ? "用户" : "小鲸鱼";
+    out += `${label}: ${m.content}\n`;
+    if (out.length > maxChars) break;
+  }
+  return out.trim();
+}
+
 const QUICK_ACTIONS = [
   { id: "search", label: "搜网页", template: "帮我搜索并总结：\n" },
   { id: "shell", label: "跑命令", template: "在终端执行以下命令并解释输出：\n" },
@@ -252,7 +268,14 @@ export default function ChatPanel({
 
     try {
       const result = useHarness
-        ? await invoke<{ message: string; thinking_content?: string; token_usage: { input: number; output: number; cached: number; cache_hit_rate: number; cache_savings?: number; thinking_tokens?: number }; total_cost?: number; finish_reason: string; context_usage: number }>("send_harness_message", { message: text, thinkingMode: thinkingMode, sessionId: `main-${Date.now()}`, mode: harnessMode, sandbox })
+        ? await invoke<{ message: string; thinking_content?: string; token_usage: { input: number; output: number; cached: number; cache_hit_rate: number; cache_savings?: number; thinking_tokens?: number }; total_cost?: number; finish_reason: string; context_usage: number }>("send_harness_message", {
+            message: text,
+            thinkingMode: thinkingMode,
+            sessionId: `main-${Date.now()}`,
+            mode: harnessMode,
+            sandbox,
+            context: buildHarnessContext(messages, 16, 12000),
+          })
         : await invoke<{ message: string; thinking_content?: string; token_usage: { input: number; output: number; cached: number; cache_hit_rate: number; cache_savings?: number; thinking_tokens?: number }; total_cost?: number; finish_reason: string; context_usage: number }>("send_message", { message: text, thinkingMode: thinkingMode });
       const assistantId = crypto.randomUUID();
       const streamedLive = streamedAnyRef.current;

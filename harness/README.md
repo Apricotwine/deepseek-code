@@ -46,3 +46,13 @@ stdout 只输出换行分隔 JSON-RPC 2.0：`initialize` / `session/prompt` / `s
 - [x] 后端解析：HARNESS_RUNTIME env → 打包资源 `_up_/harness-runtime` → 仓库本地
   闭包 → tsx checkout 回退；会话持久化到应用数据目录
 - [ ] 可视化冒烟：运行 `tauri dev`，切到 Harness 内核发一条真实消息确认 UI 正常
+
+## 运行时会话模型（实测确认）
+
+- **每进程单次**：SDK jsonrpc 运行时服务完一个 `session/prompt` 后即退出——
+  同一进程内第二次 prompt 报 Broken pipe；跨进程复用同一 session id 也不会
+  续上下文（日志不更新）。
+- **因此 IDE 自己承载跨轮连续性**：前端把最近对话（≤16 轮 / ≤12k 字符）作为
+  `context` 传给 `send_harness_message`，后端拼进 prompt（"## 之前的对话…"）。
+  实测：注入"记住 42"的历史后新会话能正确召回，且重复上下文命中前缀缓存
+  （cacheReadTokens=3584）。

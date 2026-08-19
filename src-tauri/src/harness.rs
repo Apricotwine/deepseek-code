@@ -455,4 +455,5 @@ mod tests {
         assert!(saw_completed, "turn did not reach turn/end");
         assert!(saw_text, "assistant message did not contain RUST_OK");
     }
+
 }
