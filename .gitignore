@@ -28,5 +28,9 @@ harness/VERIFICATION.md
 harness/VENDORING.md
 harness/DELIVERY.md
 
+# Vendored Harness runtime closure (built by harness/package-runtime.sh)
+harness-runtime/
+src-tauri/binaries/
+
 # Local benchmark scratch
 cache_probe_result.json

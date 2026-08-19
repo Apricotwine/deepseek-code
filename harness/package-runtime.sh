@@ -6,8 +6,9 @@ set -euo pipefail
 #   node <out>/node_modules/@deepseek-ai/dsh-sdk-jsonrpc-demo/lib/packaged-bin.js <out>/cordis.yml
 
 HARNESS_REPO="${HARNESS_REPO:-/tmp/dsh-harness-upstream}"
-OUT="${1:-harness-runtime}"
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+OUT="${1:-$HERE/harness-runtime}"
+OUT="$(cd "$(dirname "$OUT")" && pwd)/$(basename "$OUT")"
 
 cd "$HARNESS_REPO"
 

@@ -301,25 +301,64 @@ async fn send_harness_message(
     )
     .map_err(|e| e.to_string())?;
 
-    let runtime = std::env::var("HARNESS_RUNTIME").ok().filter(|v| !v.is_empty());
-    let (bin, cordis, node_args, cwd) = if let Some(rt) = runtime {
+    // Resolve the Harness runtime closure: explicit env → packaged resources
+    // → repo-local `harness-runtime/` → tsx source checkout (dev fallback).
+    // Tauri maps `../harness-runtime` resources to `_up_/harness-runtime`
+    // inside the bundle's Resources dir; also accept a direct copy.
+    let packaged = app.path().resource_dir().ok().and_then(|r| {
+        [
+            r.join("_up_").join("harness-runtime"),
+            r.join("harness-runtime"),
+        ]
+        .into_iter()
+        .find(|p| p.join("cordis.yml").exists())
+    });
+    let local = {
+        let p = base.join("../harness-runtime");
+        if p.join("cordis.yml").exists() {
+            Some(p)
+        } else {
+            None
+        }
+    };
+    let (bin, node_args, cwd) = if let Some(rt) = std::env::var("HARNESS_RUNTIME")
+        .ok()
+        .filter(|v| !v.is_empty())
+    {
         let rt_path = PathBuf::from(&rt);
         (
             rt_path.join("node_modules/@deepseek-ai/dsh-sdk-jsonrpc-demo/lib/packaged-bin.js"),
-            cfg_dir.join("cordis.yml"),
             Vec::<String>::new(),
-            rt,
+            rt_path,
+        )
+    } else if let Some(p) = packaged.or(local) {
+        (
+            p.join("node_modules/@deepseek-ai/dsh-sdk-jsonrpc-demo/lib/packaged-bin.js"),
+            Vec::<String>::new(),
+            p,
         )
     } else {
+        // tsx source checkout: bare plugins resolve from the config project,
+        // so stage the preset inside the checkout (mirrors the live test).
         let repo = std::env::var("HARNESS_REPO")
             .unwrap_or_else(|_| "/tmp/dsh-harness-upstream".to_string());
         let repo_path = PathBuf::from(&repo);
+        let staging = repo_path.join("examples/whale-app-smoke");
+        std::fs::create_dir_all(&staging).map_err(|e| e.to_string())?;
+        std::fs::copy(cfg_dir.join("cordis.yml"), staging.join("cordis.yml"))
+            .map_err(|e| e.to_string())?;
+        std::fs::copy(cfg_dir.join("tal-tool-result.mjs"), staging.join("tal-tool-result.mjs"))
+            .map_err(|e| e.to_string())?;
         (
             repo_path.join("packages/examples/jsonrpc-demo/src/bin.ts"),
-            cfg_dir.join("cordis.yml"),
             vec!["--import".to_string(), "tsx".to_string()],
-            repo,
+            repo_path,
         )
+    };
+    let cordis = if node_args.is_empty() {
+        cfg_dir.join("cordis.yml")
+    } else {
+        PathBuf::from(&cwd).join("examples/whale-app-smoke").join("cordis.yml")
     };
 
     let effort = match thinking_mode.as_deref() {
@@ -332,15 +371,44 @@ async fn send_harness_message(
     let tal = std::fs::read_to_string(base.join("../harness/time-awareness.md"))
         .unwrap_or_default();
 
+    // Node resolution: bundled next to the app binary (packaged) → `node` on
+    // PATH → common Homebrew/system locations.
+    let node_bin = std::env::current_exe()
+        .ok()
+        .and_then(|exe| exe.parent().map(|p| p.join("node")))
+        .filter(|p| p.exists())
+        .or_else(|| {
+            std::process::Command::new("which")
+                .arg("node")
+                .output()
+                .ok()
+                .filter(|o| o.status.success())
+                .and_then(|o| String::from_utf8(o.stdout).ok())
+                .map(|s| s.trim().to_string())
+                .map(PathBuf::from)
+        })
+        .or_else(|| {
+            ["/opt/homebrew/bin/node", "/usr/local/bin/node", "/usr/bin/node"]
+                .iter()
+                .map(PathBuf::from)
+                .find(|p| p.exists())
+        })
+        .unwrap_or_else(|| PathBuf::from("node"));
+    let session_root = app
+        .path()
+        .app_data_dir()
+        .map(|d| d.join("harness-sessions").to_string_lossy().to_string())
+        .unwrap_or_else(|_| "/tmp/dsh-app-sessions".to_string());
+
     let cfg = harness_backend::HarnessTurnConfig {
-        node_bin: "/opt/homebrew/bin/node".to_string(),
+        node_bin: node_bin.to_string_lossy().to_string(),
         bin,
         cordis,
         node_args,
-        cwd,
+        cwd: cwd.to_string_lossy().to_string(),
         api_key,
         workspace: workspace_root,
-        session_root: "/tmp/dsh-app-sessions".to_string(),
+        session_root,
         model: "deepseek-v4-flash".to_string(),
         effort,
         sandbox,
