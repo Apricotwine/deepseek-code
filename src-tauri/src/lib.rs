@@ -44,6 +44,19 @@ fn default_workspace_root() -> PathBuf {
     home.join("DeepSeekCodeWorkspace")
 }
 
+/// Resolve a `harness/` asset: packaged resources first (Tauri maps
+/// `../harness/...` to `_up_/harness/...` inside the bundle), then the source
+/// tree (dev). Returns the path even if missing — callers validate.
+fn harness_asset(app: &tauri::AppHandle, base: &PathBuf, rel: &str) -> PathBuf {
+    if let Ok(r) = app.path().resource_dir() {
+        let p = r.join("_up_").join("harness").join(rel);
+        if p.exists() {
+            return p;
+        }
+    }
+    base.join("../harness").join(rel)
+}
+
 /// One-time migration: sessions used to live under the workspace root's
 /// `.deepseek-code/sessions`. Copy them into the stable app-data store so
 /// existing history isn't lost after the move.
@@ -301,12 +314,12 @@ async fn send_harness_message(
     let cfg_dir = std::env::temp_dir().join(format!("dsh-config-{}", uuid::Uuid::new_v4()));
     std::fs::create_dir_all(&cfg_dir).map_err(|e| e.to_string())?;
     std::fs::copy(
-        base.join("../harness/presets").join(format!("{mode}.yml")),
+        harness_asset(&app, &base, &format!("presets/{mode}.yml")),
         cfg_dir.join("cordis.yml"),
     )
     .map_err(|e| e.to_string())?;
     std::fs::copy(
-        base.join("../harness/tal-tool-result.mjs"),
+        harness_asset(&app, &base, "tal-tool-result.mjs"),
         cfg_dir.join("tal-tool-result.mjs"),
     )
     .map_err(|e| e.to_string())?;
@@ -384,9 +397,10 @@ async fn send_harness_message(
         _ => "high",
     }
     .to_string();
-    let persona = std::fs::read_to_string(base.join("../harness/persona.md")).unwrap_or_default();
-    let tal = std::fs::read_to_string(base.join("../harness/time-awareness.md"))
-        .unwrap_or_default();
+    let persona =
+        std::fs::read_to_string(harness_asset(&app, &base, "persona.md")).unwrap_or_default();
+    let tal =
+        std::fs::read_to_string(harness_asset(&app, &base, "time-awareness.md")).unwrap_or_default();
 
     // Node resolution: bundled next to the app binary (packaged) → `node` on
     // PATH → common Homebrew/system locations.

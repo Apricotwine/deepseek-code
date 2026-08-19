@@ -42,7 +42,11 @@
             "minimumSystemVersion": "10.15"
         },
         "resources": [
-            "../harness-runtime"
+            "../harness-runtime",
+            "../harness/persona.md",
+            "../harness/time-awareness.md",
+            "../harness/tal-tool-result.mjs",
+            "../harness/presets"
         ],
         "externalBin": [
             "binaries/node"
