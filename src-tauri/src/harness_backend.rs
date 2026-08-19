@@ -181,6 +181,7 @@ pub async fn run_harness_turn(
     cfg: HarnessTurnConfig,
     session_id: &str,
     message: &str,
+    cancel: std::sync::Arc<std::sync::atomic::AtomicBool>,
 ) -> Result<HarnessTurnResult, String> {
     let mut proc = HarnessProcess::spawn(
         &cfg.node_bin,
@@ -227,9 +228,18 @@ pub async fn run_harness_turn(
     let mut done = false;
     let sleep = tokio::time::sleep(std::time::Duration::from_secs(150));
     tokio::pin!(sleep);
+    let mut cancel_ticker = tokio::time::interval(std::time::Duration::from_millis(150));
+    cancel_ticker.set_missed_tick_behavior(tokio::time::MissedTickBehavior::Delay);
 
     while !done {
         tokio::select! {
+            _ = cancel_ticker.tick() => {
+                if cancel.load(std::sync::atomic::Ordering::SeqCst) {
+                    // Dropping the process kills the child (kill_on_drop).
+                    drop(proc);
+                    return Err("Cancelled by user.".to_string());
+                }
+            }
             frame = proc.frames.recv() => {
                 match frame {
                     Some(HarnessFrame::Response { id, error, .. }) => {

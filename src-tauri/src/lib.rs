@@ -11,6 +11,7 @@ use agent::{AgentLoop, AgentTurnResult};
 use session::{Session, SessionManager};
 use std::path::PathBuf;
 use std::sync::Arc;
+use std::sync::atomic::{AtomicBool, Ordering};
 use tauri::Manager;
 use tokio::sync::Mutex;
 
@@ -18,6 +19,10 @@ struct AppState {
     agent: Option<Arc<AgentLoop>>,
     api_key: Option<String>,
     workspace_root: PathBuf,
+    /// Cancel flag for the in-flight Harness kernel turn (ESC). The harness
+    /// process is killed at the next loop tick; the native agent has its own
+    /// AtomicBool inside AgentLoop.
+    harness_cancel: Arc<AtomicBool>,
     /// Stable session store (app data dir), independent of the workspace —
     /// so history survives workspace changes and app updates.
     sessions_dir: PathBuf,
@@ -265,6 +270,11 @@ async fn send_harness_message(
     mode: Option<String>,
     sandbox: Option<String>,
 ) -> Result<harness_backend::HarnessTurnResult, String> {
+    let harness_cancel = {
+        let st = state.lock().await;
+        st.harness_cancel.clone()
+    };
+    harness_cancel.store(false, Ordering::SeqCst);
     let (api_key, workspace_root) = {
         let st = state.lock().await;
         (
@@ -360,6 +370,13 @@ async fn send_harness_message(
     } else {
         PathBuf::from(&cwd).join("examples/whale-app-smoke").join("cordis.yml")
     };
+    if !bin.exists() {
+        return Err(format!(
+            "Harness 运行时未找到（{}）。请先构建运行时闭包：\
+             bash harness/package-runtime.sh，或设置 HARNESS_RUNTIME 指向闭包目录。",
+            bin.display()
+        ));
+    }
 
     let effort = match thinking_mode.as_deref() {
         Some("non-think") => "off",
@@ -416,7 +433,7 @@ async fn send_harness_message(
         system_prompt: format!("{persona}\n\n{tal}"),
     };
     let session_id = session_id.unwrap_or_else(|| "main".to_string());
-    harness_backend::run_harness_turn(&app, cfg, &session_id, &message).await
+    harness_backend::run_harness_turn(&app, cfg, &session_id, &message, harness_cancel).await
 }
 
 #[tauri::command]
@@ -455,6 +472,7 @@ async fn cancel_agent(
     if let Some(ref agent) = app.agent {
         agent.cancel();
     }
+    app.harness_cancel.store(true, Ordering::SeqCst);
     Ok(())
 }
 
@@ -780,6 +798,7 @@ pub fn run() {
                 agent: None,
                 api_key: None,
                 workspace_root: default_workspace_root(),
+                harness_cancel: Arc::new(AtomicBool::new(false)),
                 sessions_dir: default_workspace_root().join(".deepseek-code").join("sessions"),
                 current_session_id: None,
                 terminal: Arc::new(terminal::TerminalManager::new()),
