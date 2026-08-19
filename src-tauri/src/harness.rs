@@ -357,6 +357,11 @@ mod tests {
 
         let repo = std::env::var("HARNESS_REPO")
             .unwrap_or_else(|_| "/tmp/dsh-harness-upstream".to_string());
+        // Unique session id per run so a stale JSONL log from a previous
+        // failed run never collides with this live session.
+        let session_id = format!("rust-live-{}", uuid::Uuid::new_v4());
+        let session_root = "/tmp/dsh-rust-smoke-sessions";
+        let _ = fs::remove_dir_all(session_root);
         let key = match std::env::var("DEEPSEEK_API_KEY") {
             Ok(k) if !k.is_empty() => k,
             _ => {
@@ -384,7 +389,7 @@ mod tests {
             &[
                 ("DEEPSEEK_API_KEY", key.as_str()),
                 ("DSH_CWD", "/tmp"),
-                ("DSH_SESSION_ROOT", "/tmp/dsh-rust-smoke-sessions"),
+                ("DSH_SESSION_ROOT", session_root),
                 ("DSH_SYSTEM_PROMPT", "Reply with exactly: RUST_OK"),
                 ("PATH", "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"),
             ],
@@ -400,7 +405,7 @@ mod tests {
         })
         .await
         .unwrap();
-        proc.prompt(text_prompt("rust-main", "Reply with exactly: RUST_OK"))
+        proc.prompt(text_prompt(&session_id, "Reply with exactly: RUST_OK"))
             .await
             .unwrap();
 
