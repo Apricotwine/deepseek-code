@@ -444,7 +444,8 @@ async fn send_harness_message(
         }
         if entries.len() > 200 {
             entries.sort();
-            for (_, p) in entries.into_iter().take(entries.len() - 200) {
+            let drop_count = entries.len() - 200;
+            for (_, p) in entries.into_iter().take(drop_count) {
                 let _ = tokio::fs::remove_dir_all(p).await;
             }
         }
