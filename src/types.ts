@@ -1,5 +1,15 @@
 export type ThinkingMode = "non-think" | "think-high" | "think-max";
 
+export type HarnessMode = "standard" | "minimal" | "ptc" | "creative" | "ralph";
+
+export const HARNESS_MODES: { id: HarnessMode; label: string }[] = [
+  { id: "standard", label: "标准" },
+  { id: "minimal", label: "极简" },
+  { id: "ptc", label: "PTC" },
+  { id: "creative", label: "创造" },
+  { id: "ralph", label: "Ralph" },
+];
+
 export interface SlashCommand {
   id: string;
   title: string;
@@ -102,7 +112,22 @@ export type AgentStreamEvent =
   | { type: "tool_done"; id: string; name: string; summary: string }
   | { type: "tool_error"; id: string; name: string; error: string }
   | { type: "text"; content: string }
+  | { type: "subagent_started"; parent_session_id: string; child_session_id: string }
+  | { type: "subagent_finished"; parent_session_id: string; child_session_id: string; status: string; summary: string }
+  | { type: "trajectory"; event_type: string; summary: string }
   | { type: "turn_end"; finish_reason: string; token_usage: TokenUsage; context_usage: number };
+
+export interface Subagent {
+  id: string;
+  parentId: string;
+  status: "running" | "done" | "error";
+  summary: string;
+}
+
+export interface TrajectoryEntry {
+  type: string;
+  summary: string;
+}
 
 export interface LiveActivity {
   id: string;

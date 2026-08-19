@@ -1,6 +1,8 @@
 mod agent;
 mod api;
 mod context;
+pub mod harness;
+mod harness_backend;
 mod session;
 mod terminal;
 mod tools;
@@ -127,6 +129,9 @@ async fn send_message(
     // continuation turn is an internal trigger (never stored/rendered as a
     // user bubble); the goal stamp on the wire carries the objective + rules.
     let mut burst = 0u32;
+    // Keep the last turn that produced real substance so a trailing
+    // "how should I advance?" question never replaces the actual deliverable.
+    let mut last_substantive = result.clone();
     let end_reason: Option<String>;
     loop {
         if !agent.should_auto_advance().await? {
@@ -161,6 +166,7 @@ async fn send_message(
         // working immediately.
         if burst > 0 && crate::agent::should_stop_after_turn(&result) {
             end_reason = Some("needs_input".to_string());
+            result = last_substantive.clone();
             break;
         }
         // Give the user a small window to press ESC between turns.
@@ -176,6 +182,9 @@ async fn send_message(
             Ok(r) => {
                 agent.note_auto_turn().await;
                 agent.emit_current_goal().await;
+                if !r.message.trim().is_empty() && !crate::agent::should_stop_after_turn(&r) {
+                    last_substantive = r.clone();
+                }
                 result = r;
             }
             Err(_e) => {
@@ -244,6 +253,102 @@ async fn switch_model(
 ) -> Result<String, String> {
     let agent = with_agent!(state);
     agent.switch_model(model).await
+}
+
+#[tauri::command]
+async fn send_harness_message(
+    app: tauri::AppHandle,
+    state: tauri::State<'_, Arc<Mutex<AppState>>>,
+    message: String,
+    thinking_mode: Option<String>,
+    session_id: Option<String>,
+    mode: Option<String>,
+    sandbox: Option<String>,
+) -> Result<harness_backend::HarnessTurnResult, String> {
+    let (api_key, workspace_root) = {
+        let st = state.lock().await;
+        (
+            st.api_key.clone().unwrap_or_default(),
+            st.workspace_root.display().to_string(),
+        )
+    };
+    if api_key.is_empty() {
+        return Err("no DeepSeek API key configured".to_string());
+    }
+
+    let base = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
+    let mode = mode.unwrap_or_else(|| "standard".to_string());
+    let sandbox = sandbox.unwrap_or_else(|| "workspace-write".to_string());
+    if !matches!(sandbox.as_str(), "read-only" | "workspace-write" | "danger-full-access") {
+        return Err(format!("unknown sandbox mode: {sandbox}"));
+    }
+    if !matches!(mode.as_str(), "standard" | "minimal" | "ptc" | "creative" | "ralph") {
+        return Err(format!("unknown harness mode: {mode}"));
+    }
+    // Stage the selected preset + zero-dependency TAL plugin into a private
+    // config directory. Bare plugins resolve from the runtime (packaged tree or
+    // tsx workspace); the relative `./tal-tool-result.mjs` resolves from here.
+    let cfg_dir = std::env::temp_dir().join(format!("dsh-config-{}", uuid::Uuid::new_v4()));
+    std::fs::create_dir_all(&cfg_dir).map_err(|e| e.to_string())?;
+    std::fs::copy(
+        base.join("../harness/presets").join(format!("{mode}.yml")),
+        cfg_dir.join("cordis.yml"),
+    )
+    .map_err(|e| e.to_string())?;
+    std::fs::copy(
+        base.join("../harness/tal-tool-result.mjs"),
+        cfg_dir.join("tal-tool-result.mjs"),
+    )
+    .map_err(|e| e.to_string())?;
+
+    let runtime = std::env::var("HARNESS_RUNTIME").ok().filter(|v| !v.is_empty());
+    let (bin, cordis, node_args, cwd) = if let Some(rt) = runtime {
+        let rt_path = PathBuf::from(&rt);
+        (
+            rt_path.join("node_modules/@deepseek-ai/dsh-sdk-jsonrpc-demo/lib/packaged-bin.js"),
+            cfg_dir.join("cordis.yml"),
+            Vec::<String>::new(),
+            rt,
+        )
+    } else {
+        let repo = std::env::var("HARNESS_REPO")
+            .unwrap_or_else(|_| "/tmp/dsh-harness-upstream".to_string());
+        let repo_path = PathBuf::from(&repo);
+        (
+            repo_path.join("packages/examples/jsonrpc-demo/src/bin.ts"),
+            cfg_dir.join("cordis.yml"),
+            vec!["--import".to_string(), "tsx".to_string()],
+            repo,
+        )
+    };
+
+    let effort = match thinking_mode.as_deref() {
+        Some("non-think") => "off",
+        Some("think-max") => "max",
+        _ => "high",
+    }
+    .to_string();
+    let persona = std::fs::read_to_string(base.join("../harness/persona.md")).unwrap_or_default();
+    let tal = std::fs::read_to_string(base.join("../harness/time-awareness.md"))
+        .unwrap_or_default();
+
+    let cfg = harness_backend::HarnessTurnConfig {
+        node_bin: "/opt/homebrew/bin/node".to_string(),
+        bin,
+        cordis,
+        node_args,
+        cwd,
+        api_key,
+        workspace: workspace_root,
+        session_root: "/tmp/dsh-app-sessions".to_string(),
+        model: "deepseek-v4-flash".to_string(),
+        effort,
+        sandbox,
+        max_tokens: 4096,
+        system_prompt: format!("{persona}\n\n{tal}"),
+    };
+    let session_id = session_id.unwrap_or_else(|| "main".to_string());
+    harness_backend::run_harness_turn(&app, cfg, &session_id, &message).await
 }
 
 #[tauri::command]
@@ -617,6 +722,7 @@ pub fn run() {
         .invoke_handler(tauri::generate_handler![
             init_agent,
             send_message,
+            send_harness_message,
             switch_model,
             set_thinking_budgets,
             set_time_harness,

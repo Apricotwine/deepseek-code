@@ -11,7 +11,12 @@ import TaskPanel, { type GoalState, type TaskItem } from "./components/TaskPanel
 import TerminalPanel from "./components/TerminalPanel";
 import BrowserPanel from "./components/BrowserPanel";
 import MarkdownPreview from "./components/MarkdownPreview";
-import type { Message, AppState, ThinkingMode, SlashCommand, TokenUsage } from "./types";
+import AgentsPanel from "./components/AgentsPanel";
+import ToolCatalog from "./components/ToolCatalog";
+import TrajectoryPanel from "./components/TrajectoryPanel";
+import MemoryPanel from "./components/MemoryPanel";
+import { Icon } from "./components/icons";
+import type { Message, AppState, ThinkingMode, HarnessMode, SlashCommand, TokenUsage, Subagent, TrajectoryEntry } from "./types";
 import { loadSettings, saveSettings, type StoredSettings } from "./store";
 import { useI18n } from "./i18n";
 import type { Language } from "./i18n";
@@ -35,10 +40,10 @@ export default function App() {
   const [showSidebar, setShowSidebar] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [apiKeyConfigured, setApiKeyConfigured] = useState(false);
-  const [stored, setStored] = useState<StoredSettings>({ apiKey: "", workspacePath: "", model: "deepseek-v4-flash", thinkBudget: 16_000, deepBudget: 32_000, language: "zh", timeHarness: true, goalMode: true });
+  const [stored, setStored] = useState<StoredSettings>({ apiKey: "", workspacePath: "", model: "deepseek-v4-flash", thinkBudget: 16_000, deepBudget: 32_000, language: "zh", timeHarness: true, useHarness: false, sandbox: "workspace-write", goalMode: true });
   const [initialized, setInitialized] = useState(false);
-  const [sidebarTab, setSidebarTab] = useState<"files" | "history">("files");
-  const [rightPanelTab, setRightPanelTab] = useState<"monitor" | "diffs" | "tasks">("diffs");
+  const [sidebarTab, setSidebarTab] = useState<"files" | "history" | "agents" | "memory">("files");
+  const [rightPanelTab, setRightPanelTab] = useState<"monitor" | "diffs" | "tasks" | "tools" | "trajectory">("diffs");
   const [rightPanelVisible, setRightPanelVisible] = useState(true);
   // Separate tools sidebar (terminal + browser), toggled from the top-right
   // toolbar icon — Codex/Cursor style, independent of the review panel.
@@ -71,6 +76,11 @@ export default function App() {
   const [tasks, setTasks] = useState<TaskItem[]>([]);
   const [goal, setGoal] = useState<GoalState | null>(null);
   const [goalMode, setGoalMode] = useState(true);
+  const [useHarness, setUseHarness] = useState(false);
+  const [harnessMode, setHarnessMode] = useState<HarnessMode>("standard");
+  const [agents, setAgents] = useState<Subagent[]>([]);
+  const [sandbox, setSandbox] = useState("workspace-write");
+  const [trajectory, setTrajectory] = useState<TrajectoryEntry[]>([]);
   const [maxAutoTurns, setMaxAutoTurns] = useState(10);
   const [autoTurn, setAutoTurn] = useState<{ index: number; max: number } | null>(null);
   const [autoTurnEnd, setAutoTurnEnd] = useState<string | null>(null);
@@ -81,6 +91,8 @@ export default function App() {
       setStored(s);
       setLanguage(s.language || "zh");
       setGoalMode(s.goalMode ?? true);
+      setUseHarness(s.useHarness ?? false);
+      setSandbox(s.sandbox ?? "workspace-write");
       if (s.apiKey) {
         import("@tauri-apps/api/core").then(({ invoke }) => {
           invoke<string>("init_agent", { apiKey: s.apiKey, workspacePath: s.workspacePath || null, model: s.model || "deepseek-v4-flash" })
@@ -169,6 +181,32 @@ export default function App() {
             try {
               setGoal(JSON.parse(p.goal_json as string) as GoalState);
             } catch { /* ignore parse errors */ }
+          }
+          if (p.type === "subagent_started") {
+            setAgents((prev) => [
+              ...prev,
+              {
+                id: p.child_session_id as string,
+                parentId: p.parent_session_id as string,
+                status: "running",
+                summary: "",
+              },
+            ]);
+          }
+          if (p.type === "subagent_finished") {
+            setAgents((prev) =>
+              prev.map((a) =>
+                a.id === (p.child_session_id as string)
+                  ? { ...a, status: (p.status === "ok" ? "done" : "error") as Subagent["status"], summary: (p.summary as string) || a.summary }
+                  : a
+              )
+            );
+          }
+          if (p.type === "trajectory") {
+            setTrajectory((prev) => [
+              ...prev.slice(-199),
+              { type: p.event_type as string, summary: (p.summary as string) || "" },
+            ]);
           }
           if (p.type === "auto_turn" && typeof p.index === "number" && typeof p.max === "number") {
             setAutoTurn({ index: p.index as number, max: p.max as number });
@@ -276,11 +314,13 @@ export default function App() {
     setState((prev) => ({ ...prev, sessionTokens: tokens, sessionCost: cost }));
   }, []);
 
-  const handleConfigured = useCallback(async (apiKey: string, workspacePath: string, model: string, thinkBudget: number, deepBudget: number, language: Language, timeHarness: boolean) => {
-    const settings = { apiKey, workspacePath, model, thinkBudget, deepBudget, language, timeHarness, goalMode };
+  const handleConfigured = useCallback(async (apiKey: string, workspacePath: string, model: string, thinkBudget: number, deepBudget: number, language: Language, timeHarness: boolean, useHarness: boolean, sandbox: string) => {
+    const settings = { apiKey, workspacePath, model, thinkBudget, deepBudget, language, timeHarness, useHarness, sandbox, goalMode };
     await saveSettings(settings);
     setStored(settings);
     setLanguage(language);
+    setUseHarness(useHarness);
+    setSandbox(sandbox);
     setApiKeyConfigured(true);
     setShowSettings(false);
     // Push the reasoning dial to the agent (safe to fire even before init —
@@ -519,8 +559,6 @@ export default function App() {
   return (
     <div className="app-container">
       <Toolbar
-        thinkingMode={state.thinkingMode}
-        onThinkingModeChange={setThinkingMode}
         contextUsage={state.contextUsage}
         sessionCost={state.sessionCost}
         sessionTokens={state.sessionTokens}
@@ -532,15 +570,14 @@ export default function App() {
         onToggleTools={() => setToolsPanelVisible((v) => !v)}
         onOpenSettings={() => setShowSettings(true)}
         apiKeyConfigured={apiKeyConfigured}
-        model={stored.model || "deepseek-v4-flash"}
-        onSwitchModel={handleSwitchModel}
-        switchDisabled={switchLocked}
       />
       <div className="app-body">
         <div className={`sidebar ${showSidebar ? "" : "sidebar-hidden"}`}>
           <div className="sidebar-tabs">
-            <button className={`sidebar-tab ${sidebarTab === "files" ? "active" : ""}`} onClick={() => setSidebarTab("files")}>{t("sidebar.files")}</button>
-            <button className={`sidebar-tab ${sidebarTab === "history" ? "active" : ""}`} onClick={() => setSidebarTab("history")}>{t("sidebar.history")}</button>
+            <button className={`sidebar-tab ${sidebarTab === "files" ? "active" : ""}`} onClick={() => setSidebarTab("files")}><Icon name="files" />{t("sidebar.files")}</button>
+            <button className={`sidebar-tab ${sidebarTab === "history" ? "active" : ""}`} onClick={() => setSidebarTab("history")}><Icon name="history" />{t("sidebar.history")}</button>
+            <button className={`sidebar-tab ${sidebarTab === "agents" ? "active" : ""}`} onClick={() => setSidebarTab("agents")}><Icon name="agents" />{t("sidebar.agents")}</button>
+            <button className={`sidebar-tab ${sidebarTab === "memory" ? "active" : ""}`} onClick={() => setSidebarTab("memory")}><Icon name="memory" />{t("sidebar.memory")}</button>
           </div>
           <div className="sidebar-panels">
             <div className={`sidebar-panel ${sidebarTab === "files" ? "active" : ""}`}>
@@ -557,6 +594,12 @@ export default function App() {
                 }}
                 onNewSession={newSession}
               />
+            </div>
+            <div className={`sidebar-panel ${sidebarTab === "agents" ? "active" : ""}`}>
+              <AgentsPanel agents={agents} />
+            </div>
+            <div className={`sidebar-panel ${sidebarTab === "memory" ? "active" : ""}`}>
+              <MemoryPanel />
             </div>
           </div>
         </div>
@@ -583,6 +626,14 @@ export default function App() {
               isProcessing={state.isProcessing}
               thinkingMode={state.thinkingMode}
               apiKeyConfigured={apiKeyConfigured}
+              useHarness={useHarness}
+              harnessMode={harnessMode}
+              sandbox={sandbox}
+              model={stored.model || "deepseek-v4-flash"}
+              onSwitchModel={handleSwitchModel}
+              switchDisabled={switchLocked}
+              onThinkingModeChange={setThinkingMode}
+              onHarnessModeChange={setHarnessMode}
               goalKickoff={goalKickoff}
               autoTurn={autoTurn}
               onSetAsGoal={handleSetAsGoal}
@@ -598,18 +649,32 @@ export default function App() {
         <div className={`right-panel ${rightPanelVisible ? "" : "rp-hidden"}`}>
           <div className="right-panel-tabs">
             <button className={`rp-tab ${rightPanelTab === "diffs" ? "active" : ""}`} onClick={() => setRightPanelTab("diffs")}>
-              {t("diff.changes", { n: diffs.filter((d) => d.status === "pending").length })}
+              <Icon name="diffs" />
+              <span>{t("diff.title")}</span>
+              {diffs.filter((d) => d.status === "pending").length > 0 && (
+                <span className="rp-tab-count">{diffs.filter((d) => d.status === "pending").length}</span>
+              )}
             </button>
             <button className={`rp-tab ${rightPanelTab === "tasks" ? "active" : ""}`} onClick={() => setRightPanelTab("tasks")}>
-              {t("tasks.tasks")}
-              {goal
-                ? ` (${goal.plan.filter((s) => s.status === "completed").length}/${goal.plan.length})`
-                : tasks.length > 0
-                  ? ` (${tasks.filter((t) => t.status === "completed").length}/${tasks.length})`
-                  : ""}
+              <Icon name="tasks" />
+              <span>{t("tasks.tasks")}</span>
+              {(goal && goal.plan.length > 0) || tasks.length > 0 ? (
+                <span className="rp-tab-count">
+                  {goal ? `${goal.plan.filter((s) => s.status === "completed").length}/${goal.plan.length}` : `${tasks.filter((t) => t.status === "completed").length}/${tasks.length}`}
+                </span>
+              ) : null}
             </button>
             <button className={`rp-tab ${rightPanelTab === "monitor" ? "active" : ""}`} onClick={() => setRightPanelTab("monitor")}>
+              <Icon name="monitor" />
               {t("toolbar.monitor")}
+            </button>
+            <button className={`rp-tab ${rightPanelTab === "tools" ? "active" : ""}`} onClick={() => setRightPanelTab("tools")}>
+              <Icon name="tools" />
+              {t("tools.title")}
+            </button>
+            <button className={`rp-tab ${rightPanelTab === "trajectory" ? "active" : ""}`} onClick={() => setRightPanelTab("trajectory")}>
+              <Icon name="trajectory" />
+              {t("trajectory.title")}
             </button>
             <div className="rp-tab-spacer" />
             <button
@@ -648,6 +713,12 @@ export default function App() {
               thinkingMode={state.thinkingMode}
               messagesCount={state.messages.length}
             />
+          </div>
+          <div className={`rp-content ${rightPanelTab === "tools" ? "active" : ""}`}>
+            <ToolCatalog mode={harnessMode} />
+          </div>
+          <div className={`rp-content ${rightPanelTab === "trajectory" ? "active" : ""}`}>
+            <TrajectoryPanel entries={trajectory} />
           </div>
         </div>
         {/* Tools sidebar — terminal + browser, toggled from the toolbar icon */}

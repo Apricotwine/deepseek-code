@@ -78,9 +78,18 @@ const zh = {
   sidebar: {
     files: "文件",
     history: "历史",
+    agents: "代理",
+    memory: "记忆",
     terminal: "终端",
     browser: "浏览器",
     empty: "空",
+  },
+  tools: {
+    title: "工具",
+    count: "{n} 个工具",
+  },
+  trajectory: {
+    title: "轨迹",
   },
   browser: {
     urlPlaceholder: "输入网址…",
@@ -133,6 +142,14 @@ const zh = {
     timeHarness: "时间感知层",
     timeHarnessDesc: "给工具结果注入时间戳与新鲜度规则（实验性）",
     timeHarnessHint: "开启后系统提示包含当前时钟，工具结果带 [data_time] 注解——模型能判断数据是否过期并决定是否重查。",
+    useHarness: "Harness 原生内核",
+    useHarnessDesc: "使用 DeepSeek Harness 作为 agent 内核（实验性）",
+    useHarnessHint: "开启后每次发送会启动本地 Harness 运行时驱动任务，而不是内置的 Rust loop。需要本机已 checkout DeepSeek Harness 源码。",
+    sandbox: "沙箱策略",
+    sandboxReadOnly: "只读",
+    sandboxWorkspace: "工作区可写",
+    sandboxFull: "全权（危险）",
+    sandboxHint: "控制 Harness 内核读写文件/执行命令的权限边界。全权模式会跳过多数安全限制，请谨慎。",
   },
   monitor: {
     context: "上下文",
@@ -161,6 +178,7 @@ const zh = {
     onDemand: "按需读取",
   },
   diff: {
+    title: "变更",
     changes: "变更 ({n})",
     acceptAll: "全部接受",
     rejectAll: "全部拒绝",
@@ -326,9 +344,18 @@ const en: typeof zh = {
   sidebar: {
     files: "Files",
     history: "History",
+    agents: "Agents",
+    memory: "Memory",
     terminal: "Terminal",
     browser: "Browser",
     empty: "Empty",
+  },
+  tools: {
+    title: "Tools",
+    count: "{n} tools",
+  },
+  trajectory: {
+    title: "Trajectory",
   },
   browser: {
     urlPlaceholder: "Enter a URL…",
@@ -381,6 +408,14 @@ const en: typeof zh = {
     timeHarness: "Time Awareness Layer",
     timeHarnessDesc: "Stamp tool results with timestamps + freshness rules (experimental)",
     timeHarnessHint: "Adds a live clock to the system prompt and [data_time] stamps to tool results — the model can tell when data is stale and decide whether to re-query.",
+    useHarness: "Harness native kernel",
+    useHarnessDesc: "Use DeepSeek Harness as the agent kernel (experimental)",
+    useHarnessHint: "When enabled, each send launches a local Harness runtime to drive the task instead of the built-in Rust loop. Requires a local DeepSeek Harness checkout.",
+    sandbox: "Sandbox policy",
+    sandboxReadOnly: "Read-only",
+    sandboxWorkspace: "Workspace write",
+    sandboxFull: "Full access (danger)",
+    sandboxHint: "Controls the Harness kernel's read/write and command-execution boundary. Full access bypasses most safety limits — use with care.",
   },
   monitor: {
     context: "Context",
@@ -409,6 +444,7 @@ const en: typeof zh = {
     onDemand: "on-demand",
   },
   diff: {
+    title: "Changes",
     changes: "Changes ({n})",
     acceptAll: "Accept all",
     rejectAll: "Reject all",

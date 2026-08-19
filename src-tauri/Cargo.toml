@@ -4,6 +4,7 @@ version = "0.1.0"
 description = "DeepSeek-native coding desktop workstation"
 authors = ["DeepSeek Code"]
 edition = "2021"
+default-run = "deepseek-code"
 
 [lib]
 name = "deepseek_code_lib"

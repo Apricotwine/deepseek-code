@@ -22,5 +22,11 @@ paper/
 # Benchmark scripts & result artifacts (internal verification assets)
 benchmarks/
 
+# Internal design/process docs (kept local, not published)
+docs/
+harness/VERIFICATION.md
+harness/VENDORING.md
+harness/DELIVERY.md
+
 # Local benchmark scratch
 cache_probe_result.json

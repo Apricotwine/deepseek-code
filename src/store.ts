@@ -11,6 +11,8 @@ export interface StoredSettings {
   deepBudget: number;
   language: Language;
   timeHarness: boolean;
+  useHarness: boolean;
+  sandbox: string;
   goalMode: boolean;
 }
 
@@ -22,6 +24,8 @@ const DEFAULTS: StoredSettings = {
   deepBudget: 32_000,
   language: "zh",
   timeHarness: true,
+  useHarness: false,
+  sandbox: "workspace-write",
   goalMode: true,
 };
 
@@ -36,8 +40,10 @@ export async function loadSettings(): Promise<StoredSettings> {
     const deepBudget = ((await store.get("deep_budget")) as number) || DEFAULTS.deepBudget;
     const language = ((await store.get("language")) as Language) || DEFAULTS.language;
     const timeHarness = ((await store.get("time_harness")) as boolean) ?? DEFAULTS.timeHarness;
+    const useHarness = ((await store.get("use_harness")) as boolean) ?? DEFAULTS.useHarness;
+    const sandbox = ((await store.get("sandbox")) as string) || DEFAULTS.sandbox;
     const goalMode = ((await store.get("goal_mode")) as boolean) ?? DEFAULTS.goalMode;
-    return { apiKey, workspacePath, model, thinkBudget, deepBudget, language, timeHarness, goalMode };
+    return { apiKey, workspacePath, model, thinkBudget, deepBudget, language, timeHarness, useHarness, sandbox, goalMode };
   } catch {
     return DEFAULTS;
   }
@@ -52,5 +58,7 @@ export async function saveSettings(settings: StoredSettings): Promise<void> {
   await store.set("deep_budget", settings.deepBudget);
   await store.set("language", settings.language);
   await store.set("time_harness", settings.timeHarness);
+  await store.set("use_harness", settings.useHarness);
+  await store.set("sandbox", settings.sandbox);
   await store.save();
 }

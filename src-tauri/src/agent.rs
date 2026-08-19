@@ -37,6 +37,11 @@ pub enum AgentStreamEvent {
     /// cancelled / stalled / goal_mode_off / goal_paused / goal_blocked /
     /// budget_limited.
     AutoTurnEnd { reason: String },
+    /// Harness subagent lifecycle (forwarded from the SDK notifications).
+    SubagentStarted { parent_session_id: String, child_session_id: String },
+    SubagentFinished { parent_session_id: String, child_session_id: String, status: String, summary: String },
+    /// One append-only session-log entry, for the Trajectory view.
+    Trajectory { event_type: String, summary: String },
     TurnEnd { finish_reason: String, token_usage: TokenUsageInfo, context_usage: u64 },
 }
 

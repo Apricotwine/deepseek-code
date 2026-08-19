@@ -4,10 +4,19 @@ import { invoke } from "@tauri-apps/api/core";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import StreamingText from "./StreamingText";
-import type { Message, ThinkingMode, AgentStreamEvent, LiveActivity, SlashCommand, TokenUsage } from "../types";
+import type { Message, ThinkingMode, HarnessMode, AgentStreamEvent, LiveActivity, SlashCommand, TokenUsage } from "../types";
+import { HARNESS_MODES } from "../types";
 import { useI18n } from "../i18n";
 
 const MIN_RUNNING_MS = 600; // 工具完成得再快，也至少展示 600ms 的运行渐变
+
+const QUICK_ACTIONS = [
+  { id: "search", label: "搜网页", template: "帮我搜索并总结：\n" },
+  { id: "shell", label: "跑命令", template: "在终端执行以下命令并解释输出：\n" },
+  { id: "read", label: "读文件", template: "读取并解释这个文件：\n" },
+  { id: "subagent", label: "派子代理", template: "派一个子代理去独立调查并回来汇报：\n" },
+  { id: "plan", label: "拆任务", template: "把这件事拆成可执行的计划步骤，然后开始执行：\n" },
+] as const;
 
 // A turn's live work renders as a supervision pipeline (Cursor/Codex style):
 // episode cards ("任务": reasoning summary + intermediate text) alternating
@@ -44,6 +53,14 @@ interface ChatPanelProps {
   isProcessing: boolean;
   thinkingMode: ThinkingMode;
   apiKeyConfigured: boolean;
+  useHarness: boolean;
+  harnessMode: HarnessMode;
+  sandbox: string;
+  model: string;
+  onSwitchModel: () => void;
+  switchDisabled?: boolean;
+  onThinkingModeChange: (mode: ThinkingMode) => void;
+  onHarnessModeChange: (mode: HarnessMode) => void;
   /** Increments when the user sets a goal — triggers the first auto turn. */
   goalKickoff: number;
   autoTurn: { index: number; max: number } | null;
@@ -59,12 +76,14 @@ interface ChatPanelProps {
 }
 
 export default function ChatPanel({
-  messages, isProcessing, thinkingMode, apiKeyConfigured,
+  messages, isProcessing, thinkingMode, apiKeyConfigured, useHarness, harnessMode, sandbox,
+  model, onSwitchModel, switchDisabled, onThinkingModeChange, onHarnessModeChange,
   goalKickoff, autoTurn, onSetAsGoal, goalObjective,
   onSend, onSetProcessing, onContextUpdate, onUsageUpdate, slashCommands,
 }: ChatPanelProps) {
   const { t } = useI18n();
   const [input, setInput] = useState("");
+  const inputRef = useRef<HTMLTextAreaElement>(null);
   const [streamingId, setStreamingId] = useState<string | null>(null);
   // The in-flight supervision pipeline for the current turn.
   const [pipeline, setPipeline] = useState<ProcessStep[]>([]);
@@ -232,7 +251,9 @@ export default function ChatPanel({
     unlistenRef.current = unlisten;
 
     try {
-      const result = await invoke<{ message: string; thinking_content?: string; token_usage: { input: number; output: number; cached: number; cache_hit_rate: number; cache_savings?: number; thinking_tokens?: number }; total_cost?: number; finish_reason: string; context_usage: number }>("send_message", { message: text, thinkingMode: thinkingMode });
+      const result = useHarness
+        ? await invoke<{ message: string; thinking_content?: string; token_usage: { input: number; output: number; cached: number; cache_hit_rate: number; cache_savings?: number; thinking_tokens?: number }; total_cost?: number; finish_reason: string; context_usage: number }>("send_harness_message", { message: text, thinkingMode: thinkingMode, sessionId: `main-${Date.now()}`, mode: harnessMode, sandbox })
+        : await invoke<{ message: string; thinking_content?: string; token_usage: { input: number; output: number; cached: number; cache_hit_rate: number; cache_savings?: number; thinking_tokens?: number }; total_cost?: number; finish_reason: string; context_usage: number }>("send_message", { message: text, thinkingMode: thinkingMode });
       const assistantId = crypto.randomUUID();
       const streamedLive = streamedAnyRef.current;
       turnFinishedRef.current = true;
@@ -340,8 +361,6 @@ export default function ChatPanel({
     if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) { e.preventDefault(); sendMessage(); }
   };
 
-  const modeLabel = thinkingMode === "non-think" ? "Fast" : thinkingMode === "think-high" ? "Think" : "Deep";
-
   return (
     <div className="chat-panel">
       <div className="chat-messages" ref={messagesRef} onScroll={handleScroll}>
@@ -406,8 +425,55 @@ export default function ChatPanel({
         <div ref={chatEndRef} />
       </div>
       <div className="chat-input-area">
-        <div className="chat-mode-indicator">
-          <span className={`mode-badge mode-${thinkingMode}`}>{modeLabel}</span>
+        <div className="composer-controls">
+          <button
+            className={`composer-model ${model.includes("flash") ? "flash" : "pro"}`}
+            onClick={onSwitchModel}
+            disabled={!apiKeyConfigured || switchDisabled}
+            title={model.includes("flash") ? "切换到 V4 Pro" : "切换到 V4 Flash"}
+          >
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <rect x="3" y="3" width="7" height="7" rx="1" />
+              <rect x="14" y="3" width="7" height="7" rx="1" />
+              <rect x="3" y="14" width="7" height="7" rx="1" />
+              <rect x="14" y="14" width="7" height="7" rx="1" />
+            </svg>
+            {model.includes("flash") ? "Flash" : "Pro"}
+          </button>
+
+          <div className="composer-seg" role="group">
+            <button className={thinkingMode === "non-think" ? "active" : ""} onClick={() => onThinkingModeChange("non-think")} title="Fast">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round">
+                <path d="M13 2 3 14h7l-1 8 10-12h-7z" />
+              </svg>
+            </button>
+            <button className={thinkingMode === "think-high" ? "active" : ""} onClick={() => onThinkingModeChange("think-high")} title="Think">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                <path d="M12 3c.8 2.5 1.7 3.4 4.5 4.5-2.8 1.1-3.7 2-4.5 4.5C11.2 9.5 10.3 8.6 7.5 7.5 10.3 6.4 11.2 5.5 12 3z" />
+              </svg>
+            </button>
+            <button className={thinkingMode === "think-max" ? "active" : ""} onClick={() => onThinkingModeChange("think-max")} title="Deep">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round">
+                <path d="M12 2 2 7l10 5 10-5z" />
+                <path d="M2 12l10 5 10-5" />
+                <path d="M2 17l10 5 10-5" />
+              </svg>
+            </button>
+          </div>
+
+          <div className="composer-seg composer-seg-modes" role="group">
+            {HARNESS_MODES.map((m) => (
+              <button
+                key={m.id}
+                className={harnessMode === m.id ? "active" : ""}
+                onClick={() => onHarnessModeChange(m.id)}
+                title={m.id}
+              >
+                {m.label}
+              </button>
+            ))}
+          </div>
+
           <div className="pipeline-speed" title={t("chat.speed")}>
             <button
               className={renderSpeed === "realtime" ? "active" : ""}
@@ -454,7 +520,22 @@ export default function ChatPanel({
             {t("goal.autoAdvancing", { index: autoTurn.index, max: autoTurn.max })}
           </div>
         )}
-        <textarea className="chat-input" value={input} onChange={handleInputChange} onKeyDown={handleKeyDown}
+        <div className="quick-actions">
+          {QUICK_ACTIONS.map((a) => (
+            <button
+              key={a.id}
+              className="quick-action"
+              disabled={isProcessing || !apiKeyConfigured}
+              onClick={() => {
+                setInput(a.template);
+                inputRef.current?.focus();
+              }}
+            >
+              {a.label}
+            </button>
+          ))}
+        </div>
+        <textarea ref={inputRef} className="chat-input" value={input} onChange={handleInputChange} onKeyDown={handleKeyDown}
           placeholder={apiKeyConfigured ? t("chat.placeholder") : t("chat.placeholderNoKey")}
           rows={3} disabled={isProcessing || !apiKeyConfigured} />
         <div className="chat-send-row">

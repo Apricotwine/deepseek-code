@@ -1,9 +1,7 @@
-import type { ThinkingMode, TokenUsage } from "../types";
+import type { TokenUsage } from "../types";
 import { useI18n } from "../i18n";
 
 interface ToolbarProps {
-  thinkingMode: ThinkingMode;
-  onThinkingModeChange: (mode: ThinkingMode) => void;
   contextUsage: number;
   sessionCost: number;
   sessionTokens: TokenUsage;
@@ -15,9 +13,6 @@ interface ToolbarProps {
   onToggleTools: () => void;
   onOpenSettings: () => void;
   apiKeyConfigured: boolean;
-  model: string;
-  onSwitchModel: () => void;
-  switchDisabled?: boolean;
 }
 
 function fmt(n: number): string {
@@ -27,8 +22,6 @@ function fmt(n: number): string {
 }
 
 export default function Toolbar({
-  thinkingMode,
-  onThinkingModeChange,
   contextUsage,
   sessionCost,
   sessionTokens,
@@ -40,9 +33,6 @@ export default function Toolbar({
   onToggleTools,
   onOpenSettings,
   apiKeyConfigured,
-  model,
-  onSwitchModel,
-  switchDisabled,
 }: ToolbarProps) {
   const { t } = useI18n();
   const totalTokens = sessionTokens.input + sessionTokens.output;
@@ -59,43 +49,10 @@ export default function Toolbar({
           {t("toolbar.files")}
         </button>
         <span className="toolbar-brand">DeepSeek Code</span>
-        <button
-          className="model-switch"
-          onClick={onSwitchModel}
-          disabled={!apiKeyConfigured || switchDisabled}
-          title={!apiKeyConfigured ? t("toolbar.connectFirst") : switchDisabled ? t("toolbar.switchDisabled") : t("toolbar.switchModel", { model: model.includes("flash") ? "Pro" : "Flash" })}
-        >
-          <span className={`switch-track switch-${model.includes("flash") ? "flash" : "pro"}`}>
-            <span className="switch-thumb">
-              <span className="switch-thumb-text">{model.includes("flash") ? "Flash" : "Pro"}</span>
-            </span>
-          </span>
-        </button>
         <span className="toolbar-version">v0.1</span>
       </div>
 
-      <div className="toolbar-center">
-        <div className="mode-selector">
-          <button
-            className={`mode-btn ${thinkingMode === "non-think" ? "active" : ""}`}
-            onClick={() => onThinkingModeChange("non-think")}
-          >
-            Fast
-          </button>
-          <button
-            className={`mode-btn ${thinkingMode === "think-high" ? "active" : ""}`}
-            onClick={() => onThinkingModeChange("think-high")}
-          >
-            Think
-          </button>
-          <button
-            className={`mode-btn ${thinkingMode === "think-max" ? "active" : ""}`}
-            onClick={() => onThinkingModeChange("think-max")}
-          >
-            Deep
-          </button>
-        </div>
-      </div>
+      <div className="toolbar-spacer" />
 
       <div className="toolbar-right">
         <div className="toolbar-stats">

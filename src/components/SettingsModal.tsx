@@ -11,7 +11,7 @@ type SettingsTab = "general" | "connection" | "model" | "workspace" | "about";
 interface SettingsModalProps {
   stored: StoredSettings;
   onClose: () => void;
-  onConfigured: (apiKey: string, workspacePath: string, model: string, thinkBudget: number, deepBudget: number, language: Language, timeHarness: boolean) => void;
+  onConfigured: (apiKey: string, workspacePath: string, model: string, thinkBudget: number, deepBudget: number, language: Language, timeHarness: boolean, useHarness: boolean, sandbox: string) => void;
 }
 
 export default function SettingsModal({
@@ -28,6 +28,8 @@ export default function SettingsModal({
   const [deepBudget, setDeepBudget] = useState(stored.deepBudget);
   const [showKey, setShowKey] = useState(false);
   const [timeHarness, setTimeHarness] = useState(stored.timeHarness);
+  const [useHarness, setUseHarness] = useState(stored.useHarness);
+  const [sandbox, setSandbox] = useState(stored.sandbox || "workspace-write");
   const [status, setStatus] = useState<{
     type: "success" | "error";
     msg: string;
@@ -73,7 +75,7 @@ export default function SettingsModal({
         result = "Settings saved.";
       }
       setStatus({ type: "success", msg: result });
-      onConfigured(trimmedKey, trimmedWs, model, thinkBudget, deepBudget, language, timeHarness);
+      onConfigured(trimmedKey, trimmedWs, model, thinkBudget, deepBudget, language, timeHarness, useHarness, sandbox);
     } catch (err) {
       setStatus({ type: "error", msg: `${err}` });
     } finally {
@@ -142,6 +144,31 @@ export default function SettingsModal({
                     <span>{t("settings.timeHarnessDesc")}</span>
                   </label>
                   <div className="settings-hint">{t("settings.timeHarnessHint")}</div>
+                </div>
+                <div className="settings-field">
+                  <label>{t("settings.useHarness")}</label>
+                  <label className="settings-toggle-row">
+                    <input
+                      type="checkbox"
+                      checked={useHarness}
+                      onChange={(e) => setUseHarness(e.target.checked)}
+                    />
+                    <span>{t("settings.useHarnessDesc")}</span>
+                  </label>
+                  <div className="settings-hint">{t("settings.useHarnessHint")}</div>
+                </div>
+                <div className="settings-field">
+                  <label>{t("settings.sandbox")}</label>
+                  <select
+                    className="settings-select"
+                    value={sandbox}
+                    onChange={(e) => setSandbox(e.target.value)}
+                  >
+                    <option value="read-only">{t("settings.sandboxReadOnly")}</option>
+                    <option value="workspace-write">{t("settings.sandboxWorkspace")}</option>
+                    <option value="danger-full-access">{t("settings.sandboxFull")}</option>
+                  </select>
+                  <div className="settings-hint">{t("settings.sandboxHint")}</div>
                 </div>
               </div>
             )}
